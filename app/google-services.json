@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "774228532535",
+    "project_id": "myvehicleapp-1d3f0",
+    "storage_bucket": "myvehicleapp-1d3f0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:774228532535:android:d1e20830f4b2184bdc8eb2",
+        "android_client_info": {
+          "package_name": "com.myproject.myvehicleapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "774228532535-olhhrg997djteomcj2ve1jvcdr1o81pn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAY7I73br4SIlY6-NcWGaszfZSc8yeOQSU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "774228532535-olhhrg997djteomcj2ve1jvcdr1o81pn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

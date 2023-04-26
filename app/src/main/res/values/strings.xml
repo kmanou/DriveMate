@@ -1,0 +1,84 @@
+<resources>
+    <string name="app_name">My Vehicle App</string>
+
+    <string name="action_income">Income</string>
+    <string name="action_service">Service</string>
+    <string name="action_trip">Trip</string>
+    <string name="action_spend">Expense</string>
+    <string name="action_refuel">Refuel</string>
+
+    <string name="action_more">More</string>
+    <string name="action_history">History</string>
+    <string name="action_reminder">Reminder</string>
+    <string name="action_report">Report</string>
+
+    <string name="delete_icon">delete</string>
+    <string name="save_icon">Save</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="close">Close</string>
+    <string name="types_of_income">Types of Income</string>
+    <string name="send_email">Send Email</string>
+    <string name="info_maketech_gr">info@maketech.gr</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="email">Email</string>
+    <string name="subject">Subject</string>
+    <string name="message">Message</string>
+    <string name="identification_vin">Identification (VIN)</string>
+    <string name="year">Year</string>
+    <string name="licence_plate">Licence Plate</string>
+    <string name="model">Model</string>
+    <string name="manufacturer">Manufacturer</string>
+    <string name="vehicle_name">Vehicle name</string>
+    <string name="total_price">Total Price</string>
+    <string name="odometer">Odometer</string>
+    <string name="type_of_service">Type of Service</string>
+    <string name="service_date">Service Date</string>
+    <string name="item_type">Item Type</string>
+    <string name="fuel_name">Fuel Name</string>
+    <string name="fuel_type">Fuel Type</string>
+    <string name="edit">Edit</string>
+    <string name="note_title">note title</string>
+    <string name="this_can_be_note_content_that_can_be_long">this can be note content that can be long</string>
+    <string name="note_date">note date</string>
+    <string name="payment_method">Payment method</string>
+    <string name="refueling_date">Refueling Date</string>
+    <string name="type_of_fuel">Type of Fuel</string>
+    <string name="total_litres">Total Litres</string>
+    <string name="cost_l">Cost / L</string>
+    <string name="fuel_consumption_l_100km">Fuel Consumption L/100km</string>
+    <string name="type_of_expense">Type of Expense</string>
+    <string name="type_of_income">Type of Income</string>
+    <string name="fuel_capacity_l">Fuel Capacity(L)</string>
+    <string name="chassis_number">Chassis Number</string>
+    <string name="history">History</string>
+    <string name="reports">Reports</string>
+    <string name="reminder">Reminder</string>
+    <string name="more">More</string>
+    <string name="notes">Notes</string>
+    <string name="expense">Expense</string>
+    <string name="expense_date">Expense Date</string>
+    <string name="version">Version</string>
+    <string name="vehicle_app">Vehicle App</string>
+    <string name="u0040maketech">\@maketech</string>
+    <string name="_1_0">1.0</string>
+    <string name="changelog">Changelog</string>
+    <string name="license">License</string>
+    <string name="author">Author</string>
+    <string name="kostas_manousis">Kostas Manousis</string>
+    <string name="greece">Greece</string>
+    <string name="info_maketech_eu">info@maketech.eu</string>
+    <string name="company">Company</string>
+    <string name="maketech_ltd">Maketech LTD.</string>
+    <string name="android_app_specialist">Android App Specialist</string>
+    <string name="piraeus_18539_greece_piraiki_12">Piraeus 18539 Greece Piraiki 12</string>
+    <string name="cost">Cost</string>
+    <string name="total">Total</string>
+    <string name="by_day">By Day</string>
+    <string name="by_km">By km</string>
+    <string name="charts">Charts</string>
+
+</resources>

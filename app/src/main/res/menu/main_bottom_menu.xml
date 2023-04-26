@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/History"
+        android:icon="@drawable/ic_history"
+        android:title="@string/history" />
+
+    <item
+        android:id="@+id/Reports"
+        android:icon="@drawable/ic_reports"
+        android:title="@string/reports" />
+
+    <item
+        android:title="" />
+
+    <item
+        android:id="@+id/Reminders"
+        android:icon="@drawable/ic_reminder"
+        android:title="@string/reminder" />
+
+    <item
+        android:id="@+id/More"
+        android:icon="@drawable/ic_more"
+        android:title="@string/more" />
+</menu>

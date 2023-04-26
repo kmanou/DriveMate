@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MyVehicleApp"
+        tools:targetApi="31">
+        <activity
+            android:name=".AddActivities.AddEditDeleteReminderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddActivities.AddEditDeleteExpenseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddActivities.AddEditDeleteServiceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddActivities.AddEditDeleteRefuelingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddActivities.AddEditDeleteFuelActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddActivities.AddEditDeleteNoteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddActivities.AddEditDeletePaymentMethodActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddActivities.AddEditDeleteTypeOfExpenseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddActivities.AddEditDeleteTypeOfServiceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddActivities.AddEditDeleteVehicleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MoreMenuActivities.FuelActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MoreMenuActivities.AboutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MoreMenuActivities.ContactActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MoreMenuActivities.PaymentMethodActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MoreMenuActivities.TypeOfExpenseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MoreMenuActivities.TypeOfServiceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MoreMenuActivities.VehicleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AppActivities.ServiceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AppActivities.ExpenseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AppActivities.RefuelingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AppActivities.ReminderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AppActivities.ReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AppActivities.NoteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivities.CreateAccountActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivities.SplashActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivities.LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

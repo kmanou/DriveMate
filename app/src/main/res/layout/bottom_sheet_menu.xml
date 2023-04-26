@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="150dp"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp"
+    android:orientation="vertical"
+    android:weightSum="3"
+    android:layout_gravity="center"
+    tools:context=".MainActivity">
+
+        <TextView
+            android:id="@+id/refuelBtn"
+            style="@style/ActionItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:drawableTint="@color/amber_900"
+            app:drawableLeftCompat="@drawable/ic_refuel"
+            android:text="@string/action_refuel"/>
+
+        <TextView
+            android:id="@+id/serviceBtn"
+            style="@style/ActionItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:drawableTint="@color/amber_900"
+            app:drawableLeftCompat="@drawable/ic_service"
+            android:text="@string/action_service" />
+
+        <TextView
+            android:id="@+id/expenseBtn"
+            style="@style/ActionItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:drawableTint="@color/amber_900"
+            app:drawableLeftCompat="@drawable/ic_spend"
+            android:text="@string/expense"/>
+        <TextView
+            android:id="@+id/reminderBtn"
+            style="@style/ActionItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:drawableTint="@color/amber_900"
+            app:drawableLeftCompat="@drawable/ic_remind"
+            android:text="@string/action_reminder"/>
+
+        <TextView
+            android:id="@+id/noteBtn"
+            style="@style/ActionItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:drawableTint="@color/amber_900"
+            app:drawableLeftCompat="@drawable/ic_notes"
+            android:text="@string/notes"/>
+
+        <TextView
+            android:id="@+id/closeBtn"
+            style="@style/ActionItem"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/close"
+            app:drawableTint="@color/red_A700"
+            app:drawableLeftCompat="@drawable/ic_cancel" />
+
+</LinearLayout>
