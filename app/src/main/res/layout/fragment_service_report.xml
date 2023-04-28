@@ -4,11 +4,12 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/reportServiceTitle"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:gravity="center"
         android:layout_marginTop="10dp"
-        android:text="XX entries (07/01/2022 start date - 24/12/2022 last date)"/>
+        android:text=""/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="35dp"
@@ -43,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:textColor="@color/black"
-                android:text="€1,2002.002"
+                android:text=""
                 android:gravity="center"/>
         </LinearLayout>
 
@@ -63,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:textColor="@color/black"
-                android:text="€3.334"
+                android:text=""
                 android:gravity="center"/>
         </LinearLayout>
 
@@ -84,7 +85,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:textColor="@color/black"
-                android:text="€0.249"
+                android:text=""
                 android:gravity="center"/>
 
         </LinearLayout>
@@ -100,5 +101,18 @@
         android:textStyle="bold"
         android:textSize="16sp"
         android:textColor="@color/blue_A200"/>
+
+    <Spinner
+        android:id="@+id/serviceChartSelectorSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp" />
+
+    <FrameLayout
+        android:id="@+id/serviceChartContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/blue_grey_50" />
 
 </LinearLayout>
