@@ -81,10 +81,4 @@
     <string name="by_km">By km</string>
     <string name="charts">Charts</string>
 
-    <!-- Service Chart -->
-    <string-array name="service_chart_options">
-        <item>By Month</item>
-        <item>By Date</item>
-    </string-array>
-
 </resources>

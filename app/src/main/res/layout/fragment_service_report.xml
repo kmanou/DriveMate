@@ -15,8 +15,8 @@
         android:layout_height="35dp"
         android:layout_marginLeft="7dp"
         android:layout_marginRight="7dp"
-        android:gravity="left"
-        android:text="Cost"
+        android:gravity="start"
+        android:text="@string/cost"
         android:textStyle="bold"
         android:textSize="16sp"
         android:textColor="@color/blue_A200"/>
@@ -25,7 +25,8 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:baselineAligned="false">
 
         <LinearLayout
             android:layout_weight="1"
@@ -36,7 +37,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:text="Total"
+                android:text="@string/total"
                 android:gravity="center"/>
 
             <TextView
@@ -57,7 +58,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:text="By Day"
+                android:text="@string/by_day"
                 android:gravity="center"/>
             <TextView
                 android:id="@+id/byDayServiceCostTextView"
@@ -77,7 +78,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:text="By km"
+                android:text="@string/by_km"
                 android:gravity="center"/>
 
             <TextView
@@ -96,23 +97,17 @@
         android:layout_height="25dp"
         android:layout_marginLeft="7dp"
         android:layout_marginRight="7dp"
-        android:gravity="left"
-        android:text="Charts"
+        android:gravity="start"
+        android:text="@string/charts"
         android:textStyle="bold"
         android:textSize="16sp"
         android:textColor="@color/blue_A200"/>
 
-    <Spinner
-        android:id="@+id/serviceChartSelectorSpinner"
+        <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/serviceCostPerMonthChart"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp" />
-
-    <FrameLayout
-        android:id="@+id/serviceChartContainer"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="200dp"
+        android:layout_marginTop="16dp"
         android:background="@color/blue_grey_50" />
 
 </LinearLayout>

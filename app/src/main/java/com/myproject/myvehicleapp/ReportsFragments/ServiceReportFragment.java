@@ -5,21 +5,26 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.myproject.myvehicleapp.LoginActivities.LoginActivity;
@@ -28,7 +33,15 @@ import com.myproject.myvehicleapp.Utlities.Utility;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 
@@ -39,6 +52,7 @@ public class ServiceReportFragment extends Fragment {
     private TextView mByDayServiceCostTextView;
     private TextView mReportServiceTitle;
 
+    private BarChart mServiceCostPerMonthChart;
     public static ServiceReportFragment newInstance(){
         return new ServiceReportFragment();
     }
@@ -55,6 +69,7 @@ public class ServiceReportFragment extends Fragment {
         mTotalServiceCostTextView = view.findViewById(R.id.totalServiceCostTextView);
         mByKmServiceCostTextView = view.findViewById(R.id.byKmServiceCostTextView);
         mByDayServiceCostTextView = view.findViewById(R.id.byDayServiceCostTextView);
+        mServiceCostPerMonthChart = view.findViewById(R.id.serviceCostPerMonthChart);
 
         return view;
     }
@@ -80,48 +95,49 @@ public class ServiceReportFragment extends Fragment {
 
         myServiceCollectionReference
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            double totalCost = 0;
-                            double maxOdometer = 0;
-                            long minTimestamp = Long.MAX_VALUE;
-                            long maxTimestamp = Long.MIN_VALUE;
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        double totalCost = 0;
+                        double maxOdometer = 0;
+                        long minTimestamp = Long.MAX_VALUE;
+                        long maxTimestamp = Long.MIN_VALUE;
 
-                            int numberOfEntries = 0;
+                        int numberOfEntries = 0;
 
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Double cost = document.getDouble("serviceTotalCost");
-                                Double odometer = document.getDouble("serviceOdometer");
-                                Timestamp serviceTimestamp = document.getTimestamp("serviceTimeStamp");
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Double cost = document.getDouble("serviceTotalCost");
+                            Double odometer = document.getDouble("serviceOdometer");
+                            Timestamp serviceTimestamp = document.getTimestamp("serviceTimeStamp");
 
-                                if (cost != null) {
-                                    totalCost += cost;
-                                }
-                                if (odometer != null) {
-                                    maxOdometer = Math.max(maxOdometer, odometer);
-                                }
-                                if (serviceTimestamp != null) {
-                                    long millis = serviceTimestamp.toDate().getTime();
-                                    minTimestamp = Math.min(minTimestamp, millis);
-                                    maxTimestamp = Math.max(maxTimestamp, millis);
-                                }
-
-                                numberOfEntries++;
+                            if (cost != null) {
+                                totalCost += cost;
+                            }
+                            if (odometer != null) {
+                                maxOdometer = Math.max(maxOdometer, odometer);
+                            }
+                            if (serviceTimestamp != null) {
+                                long millis = serviceTimestamp.toDate().getTime();
+                                minTimestamp = Math.min(minTimestamp, millis);
+                                maxTimestamp = Math.max(maxTimestamp, millis);
                             }
 
-                            // Calculate and display the values
-                            updateReportServiceTitle(numberOfEntries, minTimestamp, maxTimestamp);
-                            displayTotalServiceCost(totalCost);
-                            displayAvgCostPerKm(totalCost, maxOdometer);
-                            displayAvgCostPerDay(totalCost, minTimestamp, maxTimestamp);
-
-                        } else {
-                            mTotalServiceCostTextView.setText("Error fetching data.");
-                            mByKmServiceCostTextView.setText("Error fetching data.");
-                            mByDayServiceCostTextView.setText("Error fetching data.");
+                            numberOfEntries++;
                         }
+
+                        // Calculate and display the values
+                        updateReportServiceTitle(numberOfEntries, minTimestamp, maxTimestamp);
+                        displayTotalServiceCost(totalCost);
+                        displayAvgCostPerKm(totalCost, maxOdometer);
+                        displayAvgCostPerDay(totalCost, minTimestamp, maxTimestamp);
+
+                        // Calculate and display the cost per month chart
+                        Map<Integer, Float> costPerMonth = calculateCostPerMonth(task.getResult().getDocuments());
+                        setupCostPerMonthChart(costPerMonth);
+
+                    } else {
+                        mTotalServiceCostTextView.setText("Error fetching data.");
+                        mByKmServiceCostTextView.setText("Error fetching data.");
+                        mByDayServiceCostTextView.setText("Error fetching data.");
                     }
                 });
     }
@@ -160,4 +176,69 @@ public class ServiceReportFragment extends Fragment {
             mByDayServiceCostTextView.setText("N/A");
         }
     }
+
+    private Map<Integer, Float> calculateCostPerMonth(List<DocumentSnapshot> documents) {
+        Map<Integer, Float> costPerMonth = new HashMap<>();
+
+        for (DocumentSnapshot document : documents) {
+            Timestamp serviceTimestamp = document.getTimestamp("serviceTimeStamp");
+            Double cost = document.getDouble("serviceTotalCost");
+            if (serviceTimestamp != null && cost != null) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(serviceTimestamp.toDate());
+                int month = calendar.get(Calendar.MONTH);
+                int year = calendar.get(Calendar.YEAR);
+                int monthKey = year * 100 + month;
+
+                costPerMonth.put(monthKey, costPerMonth.getOrDefault(monthKey, 0f) + cost.floatValue());
+            }
+        }
+
+        return costPerMonth;
+    }
+
+    private String getMonthLabel(int monthKey) {
+        int year = monthKey / 100;
+        int month = monthKey % 100;
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
+        return dateFormat.format(calendar.getTime());
+    }
+
+    private void setupCostPerMonthChart(Map<Integer, Float> costPerMonth) {
+        List<BarEntry> entries = new ArrayList<>();
+        List<String> labels = new ArrayList<>();
+
+        // Sort the costPerMonth map by monthKey
+        List<Map.Entry<Integer, Float>> sortedEntries = new ArrayList<>(costPerMonth.entrySet());
+        sortedEntries.sort((o1, o2) -> Integer.compare(o1.getKey(), o2.getKey()));
+
+        int index = 0;
+        for (Map.Entry<Integer, Float> entry : sortedEntries) {
+            entries.add(new BarEntry(index, entry.getValue()));
+            labels.add(getMonthLabel(entry.getKey()));
+            index++;
+        }
+
+        BarDataSet dataSet = new BarDataSet(entries, "Cost per Month");
+        dataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+        dataSet.setValueTextSize(10f);
+
+        BarData barData = new BarData(dataSet);
+        mServiceCostPerMonthChart.setData(barData);
+        mServiceCostPerMonthChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
+        mServiceCostPerMonthChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        mServiceCostPerMonthChart.getXAxis().setGranularity(1f);
+        mServiceCostPerMonthChart.getXAxis().setGranularityEnabled(true);
+        mServiceCostPerMonthChart.getAxisRight().setEnabled(false);
+        mServiceCostPerMonthChart.getDescription().setEnabled(false);
+        mServiceCostPerMonthChart.setFitBars(true);
+        mServiceCostPerMonthChart.invalidate();
+    }
+
+
 }
