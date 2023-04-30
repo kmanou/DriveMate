@@ -187,6 +187,6 @@ public class HistoryFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        historyAdapter.notifyDataSetChanged();
+        fetchSubCollectionsForUserAndSortByTimestamp(FirebaseAuth.getInstance().getCurrentUser().getUid());
     }
 }
