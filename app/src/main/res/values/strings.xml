@@ -80,5 +80,16 @@
     <string name="by_day">By Day</string>
     <string name="by_km">By km</string>
     <string name="charts">Charts</string>
+    <string name="fuel">Fuel</string>
+    <string name="total_volume">Total Volume</string>
+    <string name="general_average">General Average</string>
+    <string name="fuel_efficiency">Fuel efficiency</string>
+    <string name="last">LAST</string>
+    <string name="lower">LOWER</string>
+    <string name="larger">LARGER</string>
+    <string name="total_cost">Total cost</string>
+    <string name="price_km">Price / Km</string>
+    <string name="distance">Distance</string>
+    <string name="daily_average">Daily Average</string>
 
 </resources>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -17,22 +16,22 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/reportRefuelingTitle"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:gravity="center"
-                android:layout_marginTop="10dp"
-                android:text="XX entries (07/01/2022 start date - 24/12/2022 last date)"/>
+                android:layout_marginTop="10dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:layout_marginLeft="7dp"
                 android:layout_marginRight="7dp"
-                android:gravity="left"
-                android:text="Cost"
+                android:gravity="start"
+                android:text="@string/cost"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:textColor="@color/blue_A200"/>
@@ -41,7 +40,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:baselineAligned="false">
 
                 <LinearLayout
                     android:layout_weight="1"
@@ -52,15 +52,14 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:text="Total"
+                        android:text="@string/total"
                         android:gravity="center"/>
 
                     <TextView
-                        android:id="@+id/totalGeneralCostTextView"
+                        android:id="@+id/totalRefuelingCostTextView"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:textColor="@color/black"
-                        android:text="€1,2002.002"
                         android:gravity="center"/>
                 </LinearLayout>
 
@@ -73,14 +72,13 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:text="By Day"
+                        android:text="@string/by_day"
                         android:gravity="center"/>
                     <TextView
-                        android:id="@+id/byDayGeneralCostTextView"
+                        android:id="@+id/byDayRefuelingCostTextView"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:textColor="@color/black"
-                        android:text="€3.334"
                         android:gravity="center"/>
                 </LinearLayout>
 
@@ -93,14 +91,13 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:text="By km"
+                        android:text="@string/by_km"
                         android:gravity="center"/>
                     <TextView
-                        android:id="@+id/byKmGeneralCostTextView"
+                        android:id="@+id/byKmRefuelingCostTextView"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:textColor="@color/black"
-                        android:text="€0.249"
                         android:gravity="center"/>
 
                 </LinearLayout>
@@ -108,11 +105,11 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="25dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="7dp"
                 android:layout_marginRight="7dp"
-                android:gravity="left"
-                android:text="Fuel"
+                android:gravity="start"
+                android:text="@string/fuel"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:textColor="@color/blue_A200"/>
@@ -121,7 +118,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:baselineAligned="false">
 
                 <LinearLayout
                     android:layout_weight="1"
@@ -132,7 +130,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:text="Total volume"
+                        android:text="@string/total_volume"
                         android:gravity="center"/>
 
                     <TextView
@@ -140,7 +138,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:textColor="@color/black"
-                        android:text="479.329 L"
                         android:gravity="center"/>
                 </LinearLayout>
 
@@ -153,14 +150,13 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:text="General average"
+                        android:text="@string/general_average"
                         android:gravity="center"/>
                     <TextView
                         android:id="@+id/generalAverageRefuelingFuelTextView"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:textColor="@color/black"
-                        android:text="9.966 L/100km"
                         android:gravity="center"/>
                 </LinearLayout>
 
@@ -168,301 +164,21 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:text="Fuel efficiency"
-                android:layout_marginLeft="7dp"
-                android:layout_marginRight="7dp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:text="LAST"
-                        android:gravity="center"/>
-
-                    <TextView
-                        android:id="@+id/lastFuelEfficiencyFuelTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:textColor="@color/black"
-                        android:text="10.58 L/100km"
-                        android:gravity="center"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:text="LOWER"
-                        android:gravity="center"/>
-                    <TextView
-                        android:id="@+id/lowerFuelEfficiencyFuelTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:textColor="@color/black"
-                        android:text="5.996 L/100km"
-                        android:gravity="center"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:text="LARGER"
-                        android:gravity="center"/>
-                    <TextView
-                        android:id="@+id/largerFuelEfficiencyFuelTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:textColor="@color/black"
-                        android:text="17.688 L/100km"
-                        android:gravity="center"/>
-                </LinearLayout>
-
-            </LinearLayout>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="25dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="7dp"
                 android:layout_marginRight="7dp"
-                android:gravity="left"
-                android:text="Βενζίνη"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:textColor="@color/blue_A200"
-                />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:text="Total cost"
-                        android:gravity="center"/>
-
-                    <TextView
-                        android:id="@+id/totalCostFuelRefuelingFuelTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:textColor="@color/black"
-                        android:text="€1,002.002"
-                        android:gravity="center"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:text="Total volume"
-                        android:gravity="center"/>
-                    <TextView
-                        android:id="@+id/totalVolumeFuelRefuelingFuelTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:textColor="@color/black"
-                        android:text="479.329 L"
-                        android:gravity="center"/>
-                </LinearLayout>
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:text="Fuel efficiency"
-                android:layout_marginLeft="7dp"
-                android:layout_marginRight="7dp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:text="LAST"
-                        android:gravity="center"/>
-
-                    <TextView
-                        android:id="@+id/lastFuelEfficiencyGasTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:textColor="@color/black"
-                        android:text="10.58 L/100km"
-                        android:gravity="center"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:text="LOWER"
-                        android:gravity="center"/>
-                    <TextView
-                        android:id="@+id/lowerFuelEfficiencyGasTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:textColor="@color/black"
-                        android:text="5.996 L/100km"
-                        android:gravity="center"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:text="LARGER"
-                        android:gravity="center"/>
-                    <TextView
-                        android:id="@+id/largerFuelEfficiencyGasTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:textColor="@color/black"
-                        android:text="17.688 L/100km"
-                        android:gravity="center"/>
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:text="Price / Km"
-                android:layout_marginLeft="7dp"
-                android:layout_marginRight="7dp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:text="LAST"
-                        android:gravity="center"/>
-
-                    <TextView
-                        android:id="@+id/lastPriceKmRefuelingGasTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:textColor="@color/black"
-                        android:text="€0.204"
-                        android:gravity="center"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:text="LOWER"
-                        android:gravity="center"/>
-                    <TextView
-                        android:id="@+id/lowerPriceKmRefuelingGasTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:textColor="@color/black"
-                        android:text="€0.143"
-                        android:gravity="center"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:text="LARGER"
-                        android:gravity="center"/>
-                    <TextView
-                        android:id="@+id/largerPriceKmRefuelingGasTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:textColor="@color/black"
-                        android:text="€0.412"
-                        android:gravity="center"/>
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:layout_marginLeft="7dp"
-                android:layout_marginRight="7dp"
-                android:gravity="left"
-                android:text="Charts"
+                android:gravity="start"
+                android:text="@string/charts"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:textColor="@color/blue_A200"/>
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/refuelingCostPerMonthChart"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/blue_grey_50" />
         </LinearLayout>
 
     </ScrollView>
