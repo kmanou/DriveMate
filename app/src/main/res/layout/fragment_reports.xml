@@ -34,9 +34,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tabIndicatorColor="@android:color/holo_red_dark"
+        app:tabIndicatorColor="@color/amber_900"
         app:tabMode="scrollable"
-        app:tabSelectedTextColor="@color/black"
+        app:tabSelectedTextColor="@color/amber_900"
         app:tabTextColor="@color/white" />
 
     <androidx.viewpager2.widget.ViewPager2

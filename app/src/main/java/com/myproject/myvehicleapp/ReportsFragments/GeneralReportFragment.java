@@ -277,7 +277,7 @@ public class GeneralReportFragment extends Fragment {
             updateTotalGeneralDistance(maxOdometer);
 
             // Update UI with total number of entries
-            updateReportGeneralTitle(totalEntries, minTimestamp, maxTimestamp);
+            updateReportGeneralTitle(minTimestamp, maxTimestamp);
 
         });
     }
@@ -362,12 +362,38 @@ public class GeneralReportFragment extends Fragment {
     }
 
     // Update the report general title with number of entries and date range
-    private void updateReportGeneralTitle(int totalEntries, long minTimestamp, long maxTimestamp) {
-        DateFormat dateFormat = SimpleDateFormat.getDateInstance();
-        String startDate = dateFormat.format(new Date(minTimestamp));
-        String endDate = dateFormat.format(new Date(maxTimestamp));
-        String title = totalEntries + " Entries (" + startDate + " - " + endDate + ")";
-        mReportGeneralTitle.setText(title);
-    }
+    // Update the report general title with number of entries and date range
+    private void updateReportGeneralTitle(long minTimestamp, long maxTimestamp) {
+        CollectionReference refuelingCollectionReference = Utility.getCollectionReferenceForRefueling();
+        CollectionReference serviceCollectionReference = Utility.getCollectionReferenceForService();
+        CollectionReference expenseCollectionReference = Utility.getCollectionReferenceForExpense();
 
+        Task<QuerySnapshot> refuelingTask = refuelingCollectionReference.get();
+        Task<QuerySnapshot> serviceTask = serviceCollectionReference.get();
+        Task<QuerySnapshot> expenseTask = expenseCollectionReference.get();
+
+        Task<List<QuerySnapshot>> allTasks = Tasks.whenAllSuccess(refuelingTask, serviceTask, expenseTask);
+
+        allTasks.addOnSuccessListener(querySnapshots -> {
+            int totalEntries = 0;
+
+            // Process refueling entries
+            QuerySnapshot refuelingSnapshot = querySnapshots.get(0);
+            totalEntries += refuelingSnapshot.size();
+
+            // Process service entries
+            QuerySnapshot serviceSnapshot = querySnapshots.get(1);
+            totalEntries += serviceSnapshot.size();
+
+            // Process expense entries
+            QuerySnapshot expenseSnapshot = querySnapshots.get(2);
+            totalEntries += expenseSnapshot.size();
+
+            DateFormat dateFormat = SimpleDateFormat.getDateInstance();
+            String startDate = dateFormat.format(new Date(minTimestamp));
+            String endDate = dateFormat.format(new Date(maxTimestamp));
+            String title = totalEntries + " Entries (" + startDate + " - " + endDate + ")";
+            mReportGeneralTitle.setText(title);
+        });
+    }
 }
