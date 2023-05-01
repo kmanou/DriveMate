@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -15,6 +17,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.myproject.myvehicleapp.Adapters.ReportAdapter;
 import com.myproject.myvehicleapp.R;
+import com.myproject.myvehicleapp.Utlities.Tools;
 
 
 public class ReportsFragment extends Fragment {
@@ -22,6 +25,7 @@ public class ReportsFragment extends Fragment {
 
     private TabLayout tabLayoutReports;
     private ViewPager2 viewPagerReports;
+    private Toolbar mainToolbarReport;
 
 
     public ReportsFragment() {
@@ -32,6 +36,12 @@ public class ReportsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reports, container, false);
+
+        mainToolbarReport = view.findViewById(R.id.mainToolbarReport);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(mainToolbarReport);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Reports");
+        Tools.setSystemBarColor(getActivity(), R.color.red_800);
+
 
         tabLayoutReports = view.findViewById(R.id.tabLayoutReports);
         viewPagerReports = view.findViewById(R.id.viewPagerReports);

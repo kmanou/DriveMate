@@ -164,7 +164,7 @@
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/generalCostPerMonthChart"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="300dp"
         android:layout_marginTop="16dp"
         android:background="@color/blue_grey_50" />
 

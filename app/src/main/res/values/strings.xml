@@ -91,5 +91,11 @@
     <string name="price_km">Price / Km</string>
     <string name="distance">Distance</string>
     <string name="daily_average">Daily Average</string>
+    <string name="contact">Contact</string>
+    <string name="about">About</string>
+    <string name="vehicle">Vehicle</string>
+    <string name="types_of_service">Types of Service</string>
+    <string name="types_of_expense">Types of Expense</string>
+    <string name="payment_methods">Payment Methods</string>
 
 </resources>

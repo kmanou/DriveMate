@@ -27,12 +27,10 @@
         android:id="@+id/nested_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
         android:clickable="true"
+        android:elevation="2dp"
         android:scrollbars="none"
         android:scrollingCache="true"
-        android:elevation="2dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
@@ -88,7 +86,7 @@
                             android:id="@+id/moreMenuContact"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Contact"
+                            android:text="@string/contact"
                             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/grey_80" />
 
@@ -125,7 +123,7 @@
                             android:id="@+id/moreMenuAbout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="About"
+                            android:text="@string/about"
                             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/grey_80" />
 
@@ -184,7 +182,7 @@
                             android:id="@+id/moreMenuVehicle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Vehicle"
+                            android:text="@string/vehicle"
                             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/grey_80" />
 
@@ -221,7 +219,7 @@
                             android:id="@+id/moreMenuFuel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Fuel"
+                            android:text="@string/fuel"
                             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/grey_80" />
 
@@ -281,7 +279,7 @@
                             android:id="@+id/moreMenuTypeOfService"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Types of Service"
+                            android:text="@string/types_of_service"
                             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/grey_80" />
 
@@ -318,7 +316,7 @@
                             android:id="@+id/moreMenuTypesOfExpense"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Types of Expense"
+                            android:text="@string/types_of_expense"
                             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/grey_80" />
 
@@ -355,7 +353,7 @@
                             android:id="@+id/moreMenuPaymentMethods"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Payment Methods"
+                            android:text="@string/payment_methods"
                             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/grey_80" />
 
