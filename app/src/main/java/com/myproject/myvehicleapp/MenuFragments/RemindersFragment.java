@@ -4,6 +4,8 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -134,6 +136,11 @@ public class RemindersFragment extends Fragment {
                             alarmIntent.putExtra("reminderId", documentSnapshot.getId());
                             alarmIntent.putExtra("reminderTitle", reminder.getReminderTitle());
                             alarmIntent.putExtra("reminderDescription", reminder.getReminderDescription());
+
+                            // Add the system alarm sound URI to the intent
+                            Uri alarmSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+                            alarmIntent.putExtra("soundUri", alarmSoundUri.toString());
+
                             PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
                             alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);

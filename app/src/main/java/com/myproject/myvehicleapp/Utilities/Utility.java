@@ -4,6 +4,9 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
 import android.widget.Toast;
 
 import com.google.firebase.Timestamp;
@@ -95,7 +98,7 @@ public class Utility {
                 .document().collection("my_refueling");
     }
 */
-
+/*
     public static void scheduleAlarm(Context context, String reminderId, String reminderTitle, String reminderDescription, Timestamp reminderTimestamp) {
         // Create the alarm intent
         Intent alarmIntent = new Intent(context, ReminderAlarmReceiver.class);
@@ -112,6 +115,36 @@ public class Utility {
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, reminderTimestamp.toDate().getTime(), pendingIntent);
         }
     }
+    */
+
+    public static void scheduleAlarm(Context context, String docId, String reminderTitle, String reminderDescription, Timestamp reminderTimestamp) {
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, ReminderAlarmReceiver.class);
+
+        intent.putExtra("docId", docId);
+        intent.putExtra("reminderTitle", reminderTitle);
+        intent.putExtra("reminderDescription", reminderDescription);
+
+        int alarmId = docId.hashCode();
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarmId, intent, PendingIntent.FLAG_UPDATE_CURRENT| PendingIntent.FLAG_IMMUTABLE);
+
+        if (alarmManager != null) {
+            long triggerAtMillis = reminderTimestamp.toDate().getTime();
+            Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM); // Add this line
+            intent.putExtra("soundUri", soundUri.toString()); // Add this line
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent);
+            } else {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent);
+            }
+        }
+    }
+
+
+
+
+
 
     public static void cancelAlarm(Context context, String reminderId) {
         // Create the alarm intent

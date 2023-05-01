@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
@@ -24,6 +25,7 @@ public class ReminderAlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
         // Create Notification
         createNotificationChannel(context);
 
@@ -31,6 +33,11 @@ public class ReminderAlarmReceiver extends BroadcastReceiver {
         String reminderId = intent.getStringExtra("reminderId");
         String reminderTitle = intent.getStringExtra("reminderTitle");
         String reminderDescription = intent.getStringExtra("reminderDescription");
+
+        if (reminderId == null) {
+            Log.e(TAG, "Reminder ID is null. Skipping notification.");
+            return;
+        }
 
         // Create notification intent
         Intent notificationIntent = new Intent(context, MainActivity.class);
@@ -43,9 +50,18 @@ public class ReminderAlarmReceiver extends BroadcastReceiver {
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(reminderTitle)
                 .setContentText(reminderDescription)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(reminderDescription))
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
+
+        // Retrieve the sound URI from the intent
+        String soundUriString = intent.getStringExtra("soundUri");
+        if (soundUriString != null) {
+            Uri soundUri = Uri.parse(soundUriString);
+            builder.setSound(soundUri); // Set the system alarm sound for the notification
+        }
 
         // Show notification
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
