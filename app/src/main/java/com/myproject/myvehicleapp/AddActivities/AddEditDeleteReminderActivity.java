@@ -20,8 +20,8 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.myproject.myvehicleapp.Models.ReminderModel;
 import com.myproject.myvehicleapp.R;
-import com.myproject.myvehicleapp.Utlities.Tools;
-import com.myproject.myvehicleapp.Utlities.Utility;
+import com.myproject.myvehicleapp.Utilities.Tools;
+import com.myproject.myvehicleapp.Utilities.Utility;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -134,6 +134,7 @@ public class AddEditDeleteReminderActivity extends AppCompatActivity {
         if(isEditMode){
             //update the reminder
             documentReference = Utility.getCollectionReferenceForReminders().document(docId);
+            reminderModel.setAlarmEnabled(true);
         }else{
             //create new reminder
             documentReference = Utility.getCollectionReferenceForReminders().document();

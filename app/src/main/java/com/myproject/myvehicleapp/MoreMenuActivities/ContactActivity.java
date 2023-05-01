@@ -12,7 +12,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.myproject.myvehicleapp.R;
-import com.myproject.myvehicleapp.Utlities.Tools;
+import com.myproject.myvehicleapp.Utilities.Tools;
 
 public class ContactActivity extends AppCompatActivity {
 

@@ -15,13 +15,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.Query;
 import com.myproject.myvehicleapp.Adapters.TypeOfExpenseAdapter;
-import com.myproject.myvehicleapp.Adapters.TypeOfExpenseAdapter;
 import com.myproject.myvehicleapp.AddActivities.AddEditDeleteTypeOfExpenseActivity;
 import com.myproject.myvehicleapp.LoginActivities.LoginActivity;
 import com.myproject.myvehicleapp.Models.TypeOfExpenseModel;
 import com.myproject.myvehicleapp.R;
-import com.myproject.myvehicleapp.Utlities.Tools;
-import com.myproject.myvehicleapp.Utlities.Utility;
+import com.myproject.myvehicleapp.Utilities.Tools;
+import com.myproject.myvehicleapp.Utilities.Utility;
 
 public class TypeOfExpenseActivity extends AppCompatActivity {
 

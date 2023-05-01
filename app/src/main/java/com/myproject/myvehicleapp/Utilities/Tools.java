@@ -1,4 +1,4 @@
-package com.myproject.myvehicleapp.Utlities;
+package com.myproject.myvehicleapp.Utilities;
 
 import android.app.Activity;
 import android.app.Dialog;

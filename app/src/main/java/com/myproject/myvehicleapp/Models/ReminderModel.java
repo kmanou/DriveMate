@@ -6,6 +6,7 @@ public class ReminderModel {
     public String reminderTitle;
     public String reminderDescription;
     public Timestamp reminderTimestamp;
+    private boolean alarmEnabled;
 
     public ReminderModel() {
     }
@@ -32,6 +33,14 @@ public class ReminderModel {
 
     public void setReminderTimestamp(Timestamp reminderTimestamp) {
         this.reminderTimestamp = reminderTimestamp;
+    }
+
+    public boolean isAlarmEnabled() {
+        return alarmEnabled;
+    }
+
+    public void setAlarmEnabled(boolean alarmEnabled) {
+        this.alarmEnabled = alarmEnabled;
     }
 
 }

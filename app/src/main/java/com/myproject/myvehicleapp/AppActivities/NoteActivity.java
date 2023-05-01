@@ -17,8 +17,8 @@ import com.myproject.myvehicleapp.AddActivities.AddEditDeleteNoteActivity;
 import com.myproject.myvehicleapp.MainActivity;
 import com.myproject.myvehicleapp.Models.NoteModel;
 import com.myproject.myvehicleapp.R;
-import com.myproject.myvehicleapp.Utlities.Tools;
-import com.myproject.myvehicleapp.Utlities.Utility;
+import com.myproject.myvehicleapp.Utilities.Tools;
+import com.myproject.myvehicleapp.Utilities.Utility;
 
 
 public class NoteActivity extends AppCompatActivity {

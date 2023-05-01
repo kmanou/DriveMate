@@ -1,4 +1,4 @@
-package com.myproject.myvehicleapp.Utlities;
+package com.myproject.myvehicleapp.Utilities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,11 +16,6 @@ import com.myproject.myvehicleapp.AddActivities.AddEditDeleteNoteActivity;
 import com.myproject.myvehicleapp.AddActivities.AddEditDeleteRefuelingActivity;
 import com.myproject.myvehicleapp.AddActivities.AddEditDeleteReminderActivity;
 import com.myproject.myvehicleapp.AddActivities.AddEditDeleteServiceActivity;
-import com.myproject.myvehicleapp.AppActivities.ExpenseActivity;
-import com.myproject.myvehicleapp.AppActivities.NoteActivity;
-import com.myproject.myvehicleapp.AppActivities.RefuelingActivity;
-import com.myproject.myvehicleapp.AppActivities.ReminderActivity;
-import com.myproject.myvehicleapp.AppActivities.ServiceActivity;
 import com.myproject.myvehicleapp.R;
 
 

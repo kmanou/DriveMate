@@ -26,8 +26,8 @@ import com.myproject.myvehicleapp.Models.ExpenseModel;
 import com.myproject.myvehicleapp.MoreMenuActivities.PaymentMethodActivity;
 import com.myproject.myvehicleapp.MoreMenuActivities.TypeOfExpenseActivity;
 import com.myproject.myvehicleapp.R;
-import com.myproject.myvehicleapp.Utlities.Tools;
-import com.myproject.myvehicleapp.Utlities.Utility;
+import com.myproject.myvehicleapp.Utilities.Tools;
+import com.myproject.myvehicleapp.Utilities.Utility;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

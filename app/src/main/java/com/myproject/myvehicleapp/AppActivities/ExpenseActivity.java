@@ -17,8 +17,8 @@ import com.myproject.myvehicleapp.AddActivities.AddEditDeleteExpenseActivity;
 import com.myproject.myvehicleapp.LoginActivities.LoginActivity;
 import com.myproject.myvehicleapp.Models.ExpenseModel;
 import com.myproject.myvehicleapp.R;
-import com.myproject.myvehicleapp.Utlities.Tools;
-import com.myproject.myvehicleapp.Utlities.Utility;
+import com.myproject.myvehicleapp.Utilities.Tools;
+import com.myproject.myvehicleapp.Utilities.Utility;
 
 public class ExpenseActivity extends AppCompatActivity {
 

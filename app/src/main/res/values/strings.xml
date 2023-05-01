@@ -97,5 +97,6 @@
     <string name="types_of_service">Types of Service</string>
     <string name="types_of_expense">Types of Expense</string>
     <string name="payment_methods">Payment Methods</string>
+    <string name="drivemate">DriveMate</string>
 
 </resources>

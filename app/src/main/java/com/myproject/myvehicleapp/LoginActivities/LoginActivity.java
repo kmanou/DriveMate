@@ -18,7 +18,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.myproject.myvehicleapp.MainActivity;
 import com.myproject.myvehicleapp.R;
-import com.myproject.myvehicleapp.Utlities.Utility;
+import com.myproject.myvehicleapp.Utilities.Utility;
 
 public class LoginActivity extends AppCompatActivity {
 

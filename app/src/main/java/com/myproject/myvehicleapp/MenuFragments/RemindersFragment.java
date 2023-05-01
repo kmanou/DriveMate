@@ -1,5 +1,8 @@
 package com.myproject.myvehicleapp.MenuFragments;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -8,7 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,14 +20,19 @@ import android.view.ViewGroup;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.myproject.myvehicleapp.Adapters.ReminderAdapter;
 import com.myproject.myvehicleapp.LoginActivities.LoginActivity;
-import com.myproject.myvehicleapp.Models.HistoryViewModel;
 import com.myproject.myvehicleapp.Models.ReminderModel;
 import com.myproject.myvehicleapp.R;
-import com.myproject.myvehicleapp.Utlities.Tools;
-import com.myproject.myvehicleapp.Utlities.Utility;
+import com.myproject.myvehicleapp.Utilities.ReminderAlarmReceiver;
+import com.myproject.myvehicleapp.Utilities.Tools;
+import com.myproject.myvehicleapp.Utilities.Utility;
+
+import java.util.Date;
 
 
 public class RemindersFragment extends Fragment {
@@ -33,6 +40,8 @@ public class RemindersFragment extends Fragment {
     private RecyclerView reminderRecyclerView;
     private ReminderAdapter reminderAdapter;
     private Toolbar mainToolbarReminder;
+    private AlarmManager alarmManager;
+    private PendingIntent alarmIntent;
 
     @Nullable
     @Override
@@ -52,6 +61,11 @@ public class RemindersFragment extends Fragment {
         if (auth.getCurrentUser() != null) {
             // User is signed in, set up the recycler view
             setupRecyclerView();
+            // Set up alarm manager and pending intent
+            alarmManager = (AlarmManager) requireActivity().getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(requireActivity(), ReminderAlarmReceiver.class);
+            //alarmIntent = PendingIntent.getBroadcast(requireActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            alarmIntent = PendingIntent.getBroadcast(requireActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         } else {
             // User is not signed in, redirect to login activity
             startActivity(new Intent(requireActivity(), LoginActivity.class));
@@ -85,6 +99,9 @@ public class RemindersFragment extends Fragment {
         if (reminderAdapter != null) {
             reminderAdapter.startListening();
         }
+
+        // Start alarm manager
+        startAlarm();
     }
 
     @Override
@@ -93,5 +110,40 @@ public class RemindersFragment extends Fragment {
         if (reminderAdapter != null) {
             reminderAdapter.stopListening();
         }
+
+        // Stop alarm manager
+        stopAlarm();
     }
+
+    private void startAlarm() {
+        // Get the next reminder
+        Utility.getCollectionReferenceForReminders().orderBy("reminderTimestamp", Query.Direction.ASCENDING)
+                .whereGreaterThanOrEqualTo("reminderTimestamp", new Date())
+                .limit(1)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                        ReminderModel reminder = documentSnapshot.toObject(ReminderModel.class);
+                        if (reminder != null) {
+                            // Set alarm
+                            long triggerTime = reminder.getReminderTimestamp().toDate().getTime();
+
+                            // Create alarm intent
+                            Intent alarmIntent = new Intent(getActivity(), ReminderAlarmReceiver.class);
+                            alarmIntent.putExtra("reminderId", documentSnapshot.getId());
+                            alarmIntent.putExtra("reminderTitle", reminder.getReminderTitle());
+                            alarmIntent.putExtra("reminderDescription", reminder.getReminderDescription());
+                            PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+                            alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+                        }
+                    }
+                });
+    }
+
+    private void stopAlarm() {
+        alarmManager.cancel(alarmIntent);
+    }
+
 }

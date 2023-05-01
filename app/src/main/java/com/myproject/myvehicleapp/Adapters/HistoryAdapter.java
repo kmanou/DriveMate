@@ -21,7 +21,7 @@ import com.myproject.myvehicleapp.Models.ExpenseModel;
 import com.myproject.myvehicleapp.Models.RefuelingModel;
 import com.myproject.myvehicleapp.Models.ServiceModel;
 import com.myproject.myvehicleapp.R;
-import com.myproject.myvehicleapp.Utlities.Utility;
+import com.myproject.myvehicleapp.Utilities.Utility;
 
 import java.util.List;
 

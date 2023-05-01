@@ -2,11 +2,9 @@ package com.myproject.myvehicleapp.MoreMenuActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,8 +19,8 @@ import com.myproject.myvehicleapp.AddActivities.AddEditDeleteTypeOfServiceActivi
 import com.myproject.myvehicleapp.LoginActivities.LoginActivity;
 import com.myproject.myvehicleapp.Models.TypeOfServiceModel;
 import com.myproject.myvehicleapp.R;
-import com.myproject.myvehicleapp.Utlities.Tools;
-import com.myproject.myvehicleapp.Utlities.Utility;
+import com.myproject.myvehicleapp.Utilities.Tools;
+import com.myproject.myvehicleapp.Utilities.Utility;
 
 public class TypeOfServiceActivity extends AppCompatActivity {
 

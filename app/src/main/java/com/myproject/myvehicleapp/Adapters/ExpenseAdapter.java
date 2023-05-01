@@ -17,7 +17,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.myproject.myvehicleapp.AddActivities.AddEditDeleteExpenseActivity;
 import com.myproject.myvehicleapp.Models.ExpenseModel;
 import com.myproject.myvehicleapp.R;
-import com.myproject.myvehicleapp.Utlities.Utility;
+import com.myproject.myvehicleapp.Utilities.Utility;
 
 public class ExpenseAdapter extends FirestoreRecyclerAdapter<ExpenseModel, ExpenseAdapter.ExpenseViewHolder> {
     Context context;

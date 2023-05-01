@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,10 +15,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.firebase.firestore.DocumentReference;
 import com.myproject.myvehicleapp.AddActivities.AddEditDeleteReminderActivity;
 import com.myproject.myvehicleapp.Models.ReminderModel;
 import com.myproject.myvehicleapp.R;
-import com.myproject.myvehicleapp.Utlities.Utility;
+import com.myproject.myvehicleapp.Utilities.Utility;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class ReminderAdapter extends FirestoreRecyclerAdapter<ReminderModel, ReminderAdapter.ReminderViewHolder> {
     Context context;
@@ -30,8 +37,42 @@ public class ReminderAdapter extends FirestoreRecyclerAdapter<ReminderModel, Rem
     @Override
     protected void onBindViewHolder(@NonNull ReminderViewHolder holder, int position, @NonNull ReminderModel reminderModel) {
         holder.reminderTitle.setText(reminderModel.reminderTitle);
-        holder.reminderTimestamp.setText(Utility.timestampToString(reminderModel.reminderTimestamp));
+
+        // Extract the date and time from the reminder timestamp
+        Date reminderDate = reminderModel.reminderTimestamp.toDate();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        String dateString = dateFormat.format(reminderDate);
+        String timeString = timeFormat.format(reminderDate);
+
+        // Set the date and time TextViews
+        holder.reminderTimestampDate.setText(dateString);
+        holder.reminderTimestampTime.setText(timeString);
+
+        //holder.reminderTimestamp.setText(Utility.timestampToString(reminderModel.reminderTimestamp));
         holder.reminderDescription.setText(String.valueOf(reminderModel.reminderDescription));
+
+        // Initialize the switch based on the alarm state stored in the reminderModel
+        holder.reminderToggle.setChecked(reminderModel.isAlarmEnabled());
+
+        // Set up a listener for the switch
+        holder.reminderToggle.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // Get the document ID of the current reminder
+            String docId = getSnapshots().getSnapshot(position).getId();
+
+            if (isChecked) {
+                // Enable alarm and notification
+                // Set up the alarm using the existing data in the reminderModel
+                Utility.scheduleAlarm(context, docId, reminderModel.getReminderTitle(), reminderModel.getReminderDescription(), reminderModel.getReminderTimestamp());
+            } else {
+                // Disable alarm and notification
+                Utility.cancelAlarm(context, docId);
+            }
+
+            // Update the alarm state in the Firestore document
+            DocumentReference documentReference = Utility.getCollectionReferenceForReminders().document(docId);
+            documentReference.update("alarmEnabled", isChecked);
+        });
 
         holder.editBtn.setOnClickListener((v)->{
             Intent intent = new Intent(context, AddEditDeleteReminderActivity.class);
@@ -56,8 +97,14 @@ public class ReminderAdapter extends FirestoreRecyclerAdapter<ReminderModel, Rem
 
     class ReminderViewHolder extends RecyclerView.ViewHolder{
         TextView reminderTitle;
-        TextView reminderTimestamp;
+        SwitchMaterial reminderToggle;
+        //TextView reminderTimestamp;
+        TextView reminderTimestampDate;
+        TextView reminderTimestampTime;
         TextView reminderDescription;
+
+        String docId; // Add this line
+
         ImageView editBtn;
 
         public void toggleVisibility(View view) {
@@ -79,7 +126,10 @@ public class ReminderAdapter extends FirestoreRecyclerAdapter<ReminderModel, Rem
             editBtn = itemView.findViewById(R.id.reminder_edit_btn);
 
             reminderTitle = itemView.findViewById(R.id.reminder_title);
-            reminderTimestamp = itemView.findViewById(R.id.reminder_timestamp);
+            reminderToggle = itemView.findViewById(R.id.reminder_toggle);
+            //reminderTimestamp = itemView.findViewById(R.id.reminder_timestamp_date);
+            reminderTimestampDate = itemView.findViewById(R.id.reminder_timestamp_date);
+            reminderTimestampTime = itemView.findViewById(R.id.reminder_timestamp_time);
             reminderDescription = itemView.findViewById(R.id.reminder_description);
 
             revealReminderCard.setOnClickListener(view -> {

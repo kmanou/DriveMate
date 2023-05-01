@@ -17,7 +17,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.myproject.myvehicleapp.Adapters.ReportAdapter;
 import com.myproject.myvehicleapp.R;
-import com.myproject.myvehicleapp.Utlities.Tools;
+import com.myproject.myvehicleapp.Utilities.Tools;
 
 
 public class ReportsFragment extends Fragment {

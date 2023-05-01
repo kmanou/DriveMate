@@ -19,13 +19,30 @@
         android:orientation="horizontal"
         tools:ignore="UselessParent">
 
-        <ImageView
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_gravity="center"
             android:layout_margin="5dp"
             app:srcCompat="@drawable/ic_reminder"
             app:tint="@color/amber_900" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/reminder_toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="8dp"
+                android:textOff="Off"
+                android:textOn="On" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,15 +69,35 @@
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/reminder_timestamp"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
-                android:padding="5dp"
-                android:text="Timestamp"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/reminder_timestamp_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_marginVertical="4dp"
+                    android:padding="5dp"
+                    android:text="Date"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/reminder_timestamp_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_marginVertical="4dp"
+                    android:padding="5dp"
+                    android:text="Time"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/expanded_reminder_menu"

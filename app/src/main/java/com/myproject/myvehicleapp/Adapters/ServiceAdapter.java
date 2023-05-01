@@ -17,7 +17,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.myproject.myvehicleapp.AddActivities.AddEditDeleteServiceActivity;
 import com.myproject.myvehicleapp.Models.ServiceModel;
 import com.myproject.myvehicleapp.R;
-import com.myproject.myvehicleapp.Utlities.Utility;
+import com.myproject.myvehicleapp.Utilities.Utility;
 
 public class ServiceAdapter extends FirestoreRecyclerAdapter<ServiceModel, ServiceAdapter.ServiceViewHolder> {
     Context context;

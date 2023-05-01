@@ -33,7 +33,7 @@ import com.myproject.myvehicleapp.Models.ExpenseModel;
 import com.myproject.myvehicleapp.Models.RefuelingModel;
 import com.myproject.myvehicleapp.Models.ServiceModel;
 import com.myproject.myvehicleapp.R;
-import com.myproject.myvehicleapp.Utlities.Tools;
+import com.myproject.myvehicleapp.Utilities.Tools;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -97,91 +97,7 @@ public class HistoryFragment extends Fragment {
         historyAdapter = new HistoryAdapter(getActivity(), historyViewModel.getCollectionsLiveData());
         collectionRecyclerView.setAdapter(historyAdapter);
     }
-/*
-    private void fetchSubCollectionsForUserAndSortByTimestamp(String userId) {
-        List<String> subCollections = Arrays.asList("my_expense", "my_service", "my_refueling");
-        AtomicInteger subCollectionsFetched = new AtomicInteger(0);
-        Map<String, HistoryModel> collectionsMap = new HashMap<>();
 
-
-        for (String collectionName : subCollections) {
-            String timestampField = subCollectionTimestampField.get(collectionName);
-            FirebaseFirestore.getInstance().collection("vehicles").document(userId).collection(collectionName)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    HistoryModel historyModel = new HistoryModel();
-                                    historyModel.setId(document.getId());
-                                    historyModel.setCollectionType(collectionName);
-
-                                    // Set the timestamp here
-                                    Timestamp timestamp = document.getTimestamp(timestampField);
-                                    historyModel.setCollectionTimestamp(timestamp);
-
-                                    if (collectionName.equals("my_refueling")) {
-                                        RefuelingModel refuelingModel = document.toObject(RefuelingModel.class);
-                                        historyModel.setRefuelingModel(refuelingModel);
-                                    } else if (collectionName.equals("my_expense")) {
-                                        ExpenseModel expenseModel = document.toObject(ExpenseModel.class);
-                                        historyModel.setExpenseModel(expenseModel);
-                                    } else if (collectionName.equals("my_service")) {
-                                        ServiceModel serviceModel = document.toObject(ServiceModel.class);
-                                        historyModel.setServiceModel(serviceModel);
-                                    }
-                                    List<HistoryModel> currentCollections = historyViewModel.getCollectionsLiveData().getValue();
-                                    if (currentCollections == null) {
-                                        currentCollections = new ArrayList<>();
-                                    }
-                                    currentCollections.add(historyModel);
-                                    historyViewModel.setCollections(currentCollections);
-                                }
-
-                                if (subCollectionsFetched.incrementAndGet() == subCollections.size()) {
-                                    List<HistoryModel> currentCollections = historyViewModel.getCollectionsLiveData().getValue();
-                                    if (currentCollections == null) {
-                                        currentCollections = new ArrayList<>();
-                                    }
-
-                                    Collections.sort(currentCollections, new Comparator<HistoryModel>() {
-                                        @Override
-                                        public int compare(HistoryModel o1, HistoryModel o2) {
-                                            Timestamp ts1 = o1.getCollectionTimestamp();
-                                            Timestamp ts2 = o2.getCollectionTimestamp();
-
-                                            if (ts1 == null && ts2 == null) {
-                                                return 0;
-                                            } else if (ts1 == null) {
-                                                return 1;
-                                            } else if (ts2 == null) {
-                                                return -1;
-                                            } else {
-                                                return ts2.compareTo(ts1);
-                                            }
-                                        }
-                                    });
-
-                                    // Update the LiveData with the new collections list
-                                    historyViewModel.setCollections(currentCollections);
-
-                                    // Observe the LiveData and update the RecyclerView adapter when the data changes
-                                    historyViewModel.getCollectionsLiveData().observe(getViewLifecycleOwner(), new Observer<List<HistoryModel>>() {
-                                        @Override
-                                        public void onChanged(List<HistoryModel> historyModels) {
-                                            historyAdapter.notifyDataSetChanged();
-                                        }
-                                    });
-                                }
-                            } else {
-                                Log.w(TAG, "Error getting documents.", task.getException());
-                            }
-                        }
-                    });
-        }
-    }
-*/
 private void fetchSubCollectionsForUserAndSortByTimestamp(String userId) {
     List<String> subCollections = Arrays.asList("my_expense", "my_service", "my_refueling");
     Map<String, HistoryModel> collectionsMap = new HashMap<>();

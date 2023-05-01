@@ -1,6 +1,9 @@
-package com.myproject.myvehicleapp.Utlities;
+package com.myproject.myvehicleapp.Utilities;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.widget.Toast;
 
 import com.google.firebase.Timestamp;
@@ -92,6 +95,38 @@ public class Utility {
                 .document().collection("my_refueling");
     }
 */
+
+    public static void scheduleAlarm(Context context, String reminderId, String reminderTitle, String reminderDescription, Timestamp reminderTimestamp) {
+        // Create the alarm intent
+        Intent alarmIntent = new Intent(context, ReminderAlarmReceiver.class);
+        alarmIntent.putExtra("reminderId", reminderId);
+        alarmIntent.putExtra("reminderTitle", reminderTitle);
+        alarmIntent.putExtra("reminderDescription", reminderDescription);
+
+        // Create a PendingIntent for the alarm
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, reminderId.hashCode(), alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT| PendingIntent.FLAG_IMMUTABLE);
+
+        // Schedule the alarm using AlarmManager
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        if (alarmManager != null) {
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, reminderTimestamp.toDate().getTime(), pendingIntent);
+        }
+    }
+
+    public static void cancelAlarm(Context context, String reminderId) {
+        // Create the alarm intent
+        Intent alarmIntent = new Intent(context, ReminderAlarmReceiver.class);
+
+        // Create a PendingIntent for the alarm
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, reminderId.hashCode(), alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT| PendingIntent.FLAG_IMMUTABLE);
+
+        // Cancel the alarm using AlarmManager
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        if (alarmManager != null) {
+            alarmManager.cancel(pendingIntent);
+        }
+    }
+
     public static String timestampToString(Timestamp timestamp){
         return new SimpleDateFormat("dd/MM/yyyy").format(timestamp.toDate());
     }

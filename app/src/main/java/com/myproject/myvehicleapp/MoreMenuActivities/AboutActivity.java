@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.myproject.myvehicleapp.R;
-import com.myproject.myvehicleapp.Utlities.Tools;
+import com.myproject.myvehicleapp.Utilities.Tools;
 
 public class AboutActivity extends AppCompatActivity {
 

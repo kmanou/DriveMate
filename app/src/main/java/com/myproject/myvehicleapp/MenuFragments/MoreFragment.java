@@ -24,7 +24,7 @@ import com.myproject.myvehicleapp.MoreMenuActivities.TypeOfExpenseActivity;
 import com.myproject.myvehicleapp.MoreMenuActivities.TypeOfServiceActivity;
 import com.myproject.myvehicleapp.MoreMenuActivities.VehicleActivity;
 import com.myproject.myvehicleapp.R;
-import com.myproject.myvehicleapp.Utlities.Tools;
+import com.myproject.myvehicleapp.Utilities.Tools;
 
 
 public class MoreFragment extends Fragment {

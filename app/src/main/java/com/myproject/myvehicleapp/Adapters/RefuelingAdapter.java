@@ -18,7 +18,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.myproject.myvehicleapp.AddActivities.AddEditDeleteRefuelingActivity;
 import com.myproject.myvehicleapp.Models.RefuelingModel;
 import com.myproject.myvehicleapp.R;
-import com.myproject.myvehicleapp.Utlities.Utility;
+import com.myproject.myvehicleapp.Utilities.Utility;
 
 public class RefuelingAdapter extends FirestoreRecyclerAdapter<RefuelingModel, RefuelingAdapter.RefuelingViewHolder> {
     Context context;

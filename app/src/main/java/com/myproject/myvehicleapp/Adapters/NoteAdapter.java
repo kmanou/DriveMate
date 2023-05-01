@@ -15,7 +15,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.myproject.myvehicleapp.AddActivities.AddEditDeleteNoteActivity;
 import com.myproject.myvehicleapp.Models.NoteModel;
 import com.myproject.myvehicleapp.R;
-import com.myproject.myvehicleapp.Utlities.Utility;
+import com.myproject.myvehicleapp.Utilities.Utility;
 
 public class NoteAdapter extends FirestoreRecyclerAdapter<NoteModel, NoteAdapter.NoteViewHolder> {
     Context context;

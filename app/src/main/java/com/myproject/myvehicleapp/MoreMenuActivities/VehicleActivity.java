@@ -13,15 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.Query;
-import com.myproject.myvehicleapp.Adapters.NoteAdapter;
 import com.myproject.myvehicleapp.Adapters.VehicleAdapter;
 import com.myproject.myvehicleapp.AddActivities.AddEditDeleteVehicleActivity;
-import com.myproject.myvehicleapp.MainActivity;
-import com.myproject.myvehicleapp.Models.NoteModel;
 import com.myproject.myvehicleapp.Models.VehicleModel;
 import com.myproject.myvehicleapp.R;
-import com.myproject.myvehicleapp.Utlities.Tools;
-import com.myproject.myvehicleapp.Utlities.Utility;
+import com.myproject.myvehicleapp.Utilities.Tools;
+import com.myproject.myvehicleapp.Utilities.Utility;
 
 public class VehicleActivity extends AppCompatActivity {
 

@@ -19,10 +19,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.myproject.myvehicleapp.Models.VehicleModel;
 import com.myproject.myvehicleapp.MoreMenuActivities.FuelActivity;
 import com.myproject.myvehicleapp.R;
-import com.myproject.myvehicleapp.Utlities.Tools;
-import com.myproject.myvehicleapp.Utlities.Utility;
-
-import java.util.Objects;
+import com.myproject.myvehicleapp.Utilities.Tools;
+import com.myproject.myvehicleapp.Utilities.Utility;
 
 public class AddEditDeleteVehicleActivity extends AppCompatActivity {
 
