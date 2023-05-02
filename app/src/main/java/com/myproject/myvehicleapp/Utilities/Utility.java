@@ -141,11 +141,6 @@ public class Utility {
         }
     }
 
-
-
-
-
-
     public static void cancelAlarm(Context context, String reminderId) {
         // Create the alarm intent
         Intent alarmIntent = new Intent(context, ReminderAlarmReceiver.class);
