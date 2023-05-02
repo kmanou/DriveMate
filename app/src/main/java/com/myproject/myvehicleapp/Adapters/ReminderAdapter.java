@@ -29,6 +29,7 @@ import java.util.Locale;
 
 public class ReminderAdapter extends FirestoreRecyclerAdapter<ReminderModel, ReminderAdapter.ReminderViewHolder> {
     Context context;
+    private int expandedPosition = -1;
 
     public ReminderAdapter(@NonNull FirestoreRecyclerOptions<ReminderModel> options, Context context) {
         super(options);
@@ -50,7 +51,8 @@ public class ReminderAdapter extends FirestoreRecyclerAdapter<ReminderModel, Rem
         holder.reminderTimestampDate.setText(dateString);
         holder.reminderTimestampTime.setText(timeString);
 
-        //holder.reminderTimestamp.setText(Utility.timestampToString(reminderModel.reminderTimestamp));
+        holder.reminderToggle.setOnCheckedChangeListener(null);
+
         holder.reminderDescription.setText(String.valueOf(reminderModel.reminderDescription));
 
         // Initialize the switch based on the alarm state stored in the reminderModel
@@ -89,8 +91,6 @@ public class ReminderAdapter extends FirestoreRecyclerAdapter<ReminderModel, Rem
             documentReference.update("alarmEnabled", isChecked);
         });
 
-
-
         holder.editBtn.setOnClickListener((v)->{
             Intent intent = new Intent(context, AddEditDeleteReminderActivity.class);
 
@@ -103,6 +103,10 @@ public class ReminderAdapter extends FirestoreRecyclerAdapter<ReminderModel, Rem
 
             context.startActivity(intent);
         });
+
+        // Expand or collapse the item based on the expandedPosition
+        final boolean isExpanded = position == expandedPosition;
+        holder.linearLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
     }
 
     @NonNull
@@ -123,23 +127,12 @@ public class ReminderAdapter extends FirestoreRecyclerAdapter<ReminderModel, Rem
 
         ImageView reminderIcon;
         ImageView editBtn;
-
-        public void toggleVisibility(View view) {
-            if (view.getVisibility() == View.VISIBLE) {
-                view.setVisibility(View.GONE);
-            } else {
-                view.setVisibility(View.VISIBLE);
-            }
-        }
+        LinearLayout linearLayout;
 
         public ReminderViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            LinearLayout linearLayout, revealReminderCard;
             linearLayout = itemView.findViewById(R.id.expanded_reminder_menu);
-            revealReminderCard = itemView.findViewById(R.id.revealReminder);
-            linearLayout.setVisibility(View.GONE);
-
             editBtn = itemView.findViewById(R.id.reminder_edit_btn);
 
             reminderTitle = itemView.findViewById(R.id.reminder_title);
@@ -150,9 +143,19 @@ public class ReminderAdapter extends FirestoreRecyclerAdapter<ReminderModel, Rem
             reminderToggle = itemView.findViewById(R.id.reminder_toggle);
             reminderIcon = itemView.findViewById(R.id.reminderSwitchIcon);
 
-            revealReminderCard.setOnClickListener(view -> {
-                toggleVisibility(linearLayout);
-                notifyDataSetChanged();
+            itemView.setOnClickListener(view -> {
+                if (expandedPosition == getBindingAdapterPosition()) {
+                    expandedPosition = -1;
+                    notifyItemChanged(getBindingAdapterPosition());
+                } else {
+                    if (expandedPosition != -1) {
+                        int oldExpandedPosition = expandedPosition;
+                        expandedPosition = -1;
+                        notifyItemChanged(oldExpandedPosition);
+                    }
+                    expandedPosition = getBindingAdapterPosition();
+                    notifyItemChanged(getBindingAdapterPosition());
+                }
             });
         }
     }

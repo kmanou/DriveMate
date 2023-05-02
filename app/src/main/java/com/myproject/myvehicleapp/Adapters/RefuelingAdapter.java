@@ -99,7 +99,7 @@ public class RefuelingAdapter extends FirestoreRecyclerAdapter<RefuelingModel, R
             refuelingTotalLitres = itemView.findViewById(R.id.refuelingTotalLitresTVItem);
             refuelingTypeOfFuel = itemView.findViewById(R.id.refuelingTypeOfFuelTVItem);
             refuelingCostPerLitre = itemView.findViewById(R.id.refuelingCostPerLitreTVItem);
-            refuelingFuelConsumption = itemView.findViewById(R.id.refuelingFuelConsumptionTVItem);
+            //refuelingFuelConsumption = itemView.findViewById(R.id.refuelingFuelConsumptionTVItem);
             refuelingOdometer = itemView.findViewById(R.id.refuelingOdometerCounterTVItem);
             refuelingTotalPrice = itemView.findViewById(R.id.refuelingTotalPriceTVItem);
 

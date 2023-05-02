@@ -29,7 +29,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private Context context;
     private LiveData<List<HistoryModel>> collectionsLiveData;
-
+    private int expandedPosition = -1;
 
     public HistoryAdapter(Context context, LiveData<List<HistoryModel>> collectionsLiveData) {
         this.context = context;
@@ -77,6 +77,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         HistoryModel collection = collectionsLiveData.getValue().get(position);
+        boolean isExpanded = position == expandedPosition;
 
         switch (holder.getItemViewType()) {
             case 0:
@@ -114,6 +115,16 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     context.startActivity(intent);
                     notifyDataSetChanged();
                 });
+
+                refuelingViewHolder.refuelinglinearLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+                refuelingViewHolder.revealRefuelingCard.setOnClickListener(view -> {
+                    int previousExpandedPosition = expandedPosition;
+                    expandedPosition = position == expandedPosition ? -1 : position;
+                    if (previousExpandedPosition != -1) {
+                        notifyItemChanged(previousExpandedPosition);
+                    }
+                    notifyItemChanged(position);
+                });
                 break;
             case 1:
                 ExpenseViewHolder expenseViewHolder = (ExpenseViewHolder) holder;
@@ -144,6 +155,16 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
                     context.startActivity(intent);
                     notifyDataSetChanged();
+                });
+
+                expenseViewHolder.expenseLinearLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+                expenseViewHolder.revealExpenseCard.setOnClickListener(view -> {
+                    int previousExpandedPosition = expandedPosition;
+                    expandedPosition = position == expandedPosition ? -1 : position;
+                    if (previousExpandedPosition != -1) {
+                        notifyItemChanged(previousExpandedPosition);
+                    }
+                    notifyItemChanged(position);
                 });
 
                 break;
@@ -177,6 +198,16 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     context.startActivity(intent);
                     notifyDataSetChanged();
                 });
+
+                serviceViewHolder.serviceLinearLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+                serviceViewHolder.revealServiceCard.setOnClickListener(view -> {
+                    int previousExpandedPosition = expandedPosition;
+                    expandedPosition = position == expandedPosition ? -1 : position;
+                    if (previousExpandedPosition != -1) {
+                        notifyItemChanged(previousExpandedPosition);
+                    }
+                    notifyItemChanged(position);
+                });
                 break;
             default:
                 throw new IllegalArgumentException("Invalid view type");
@@ -195,26 +226,18 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         TextView refuelingTotalLitres;
         TextView refuelingTypeOfFuel;
         TextView refuelingCostPerLitre;
-        TextView refuelingFuelConsumption;
+        //TextView refuelingFuelConsumption;
         TextView refuelingOdometer;
         TextView refuelingTotalPrice;
         ImageView refuelingEditBtn;
-
-        public void toggleVisibility(View view) {
-            if (view.getVisibility() == View.VISIBLE) {
-                view.setVisibility(View.GONE);
-            } else {
-                view.setVisibility(View.VISIBLE);
-            }
-        }
-
+        LinearLayout refuelinglinearLayout;
+        View revealRefuelingCard;
         public RefuelingViewHolder(@NonNull View itemView) {
             super(itemView);
-            LinearLayout linearLayout, revealRefuelingCard;
-            linearLayout = itemView.findViewById(R.id.expanded_refueling_menu);
-            revealRefuelingCard = itemView.findViewById(R.id.revealRefueling);
-            linearLayout.setVisibility(View.GONE);
 
+            refuelinglinearLayout = itemView.findViewById(R.id.expanded_refueling_menu);
+            //linearLayout.setVisibility(View.GONE);
+            revealRefuelingCard = itemView.findViewById(R.id.revealRefueling);
             // Initialize other views as needed
 
             refuelingEditBtn = itemView.findViewById(R.id.refueling_edit_btn);
@@ -225,13 +248,23 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             refuelingTotalLitres = itemView.findViewById(R.id.refuelingTotalLitresTVItem);
             refuelingTypeOfFuel = itemView.findViewById(R.id.refuelingTypeOfFuelTVItem);
             refuelingCostPerLitre = itemView.findViewById(R.id.refuelingCostPerLitreTVItem);
-            refuelingFuelConsumption = itemView.findViewById(R.id.refuelingFuelConsumptionTVItem);
+            //refuelingFuelConsumption = itemView.findViewById(R.id.refuelingFuelConsumptionTVItem);
             refuelingOdometer = itemView.findViewById(R.id.refuelingOdometerCounterTVItem);
             refuelingTotalPrice = itemView.findViewById(R.id.refuelingTotalPriceTVItem);
 
-            revealRefuelingCard.setOnClickListener(view -> {
-                toggleVisibility(linearLayout);
-                notifyDataSetChanged();
+            itemView.setOnClickListener(view -> {
+                if (expandedPosition == getBindingAdapterPosition()) {
+                    expandedPosition = -1;
+                    notifyItemChanged(getBindingAdapterPosition());
+                } else {
+                    if (expandedPosition != -1) {
+                        int oldExpandedPosition = expandedPosition;
+                        expandedPosition = -1;
+                        notifyItemChanged(oldExpandedPosition);
+                    }
+                    expandedPosition = getBindingAdapterPosition();
+                    notifyItemChanged(getBindingAdapterPosition());
+                }
             });
         }
     }
@@ -244,22 +277,15 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         TextView expenseTypeOfExpense;
         TextView expenseTotalPrice;
         ImageView expenseEditBtn;
-
-        public void toggleVisibility(View view) {
-            if (view.getVisibility() == View.VISIBLE) {
-                view.setVisibility(View.GONE);
-            } else {
-                view.setVisibility(View.VISIBLE);
-            }
-        }
+        LinearLayout expenseLinearLayout;
+        View revealExpenseCard;
 
         public ExpenseViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            LinearLayout linearLayout, revealExpenseCard;
-            linearLayout = itemView.findViewById(R.id.expanded_expense_menu);
+            expenseLinearLayout = itemView.findViewById(R.id.expanded_expense_menu);
             revealExpenseCard = itemView.findViewById(R.id.revealExpense);
-            linearLayout.setVisibility(View.GONE);
+            expenseLinearLayout.setVisibility(View.GONE);
 
             // Initialize other views as needed
 
@@ -271,40 +297,39 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             expenseTypeOfExpense = itemView.findViewById(R.id.expenseTypeOfExpenseTVItem);
             expenseTotalPrice = itemView.findViewById(R.id.expenseTotalPriceTVItem);
 
-            revealExpenseCard.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    toggleVisibility(linearLayout);
-                    notifyDataSetChanged();
+            itemView.setOnClickListener(view -> {
+                if (expandedPosition == getBindingAdapterPosition()) {
+                    expandedPosition = -1;
+                    notifyItemChanged(getBindingAdapterPosition());
+                } else {
+                    if (expandedPosition != -1) {
+                        int oldExpandedPosition = expandedPosition;
+                        expandedPosition = -1;
+                        notifyItemChanged(oldExpandedPosition);
+                    }
+                    expandedPosition = getBindingAdapterPosition();
+                    notifyItemChanged(getBindingAdapterPosition());
                 }
             });
         }
     }
 
     public class ServiceViewHolder extends RecyclerView.ViewHolder {
+
         TextView serviceRecyclerTypeTitle;
         TextView serviceDateTime;
         TextView serviceOdometer;
         TextView serviceTypeOfService;
         TextView serviceTotalPrice;
         ImageView serviceEditBtn;
-
-        public void toggleVisibility(View view) {
-            if (view.getVisibility() == View.VISIBLE) {
-                view.setVisibility(View.GONE);
-            } else {
-                view.setVisibility(View.VISIBLE);
-            }
-        }
-
+        LinearLayout serviceLinearLayout;
+        View revealServiceCard;
 
         public ServiceViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            LinearLayout linearLayout, revealServiceCard;
-            linearLayout = itemView.findViewById(R.id.expanded_service_menu);
+            serviceLinearLayout = itemView.findViewById(R.id.expanded_service_menu);
             revealServiceCard = itemView.findViewById(R.id.revealService);
-            linearLayout.setVisibility(View.GONE);
 
             // Initialize other views as needed
             serviceEditBtn = itemView.findViewById(R.id.service_edit_btn);
@@ -315,11 +340,18 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             serviceTypeOfService = itemView.findViewById(R.id.serviceTypeOfServiceTVItem);
             serviceTotalPrice = itemView.findViewById(R.id.serviceTotalPriceTVItem);
 
-            revealServiceCard.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    toggleVisibility(linearLayout);
-                    notifyDataSetChanged();
+            itemView.setOnClickListener(view -> {
+                if (expandedPosition == getBindingAdapterPosition()) {
+                    expandedPosition = -1;
+                    notifyItemChanged(getBindingAdapterPosition());
+                } else {
+                    if (expandedPosition != -1) {
+                        int oldExpandedPosition = expandedPosition;
+                        expandedPosition = -1;
+                        notifyItemChanged(oldExpandedPosition);
+                    }
+                    expandedPosition = getBindingAdapterPosition();
+                    notifyItemChanged(getBindingAdapterPosition());
                 }
             });
         }
