@@ -69,7 +69,7 @@ public class RefuelingAdapter extends FirestoreRecyclerAdapter<RefuelingModel, R
         TextView refuelingTotalLitres;
         TextView refuelingTypeOfFuel;
         TextView refuelingCostPerLitre;
-        TextView refuelingFuelConsumption;
+        //TextView refuelingFuelConsumption;
         TextView refuelingOdometer;
         TextView refuelingTotalPrice;
         ImageView editBtn;
