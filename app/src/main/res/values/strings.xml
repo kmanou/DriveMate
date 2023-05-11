@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Vehicle App</string>
+    <string name="app_name">DriveMate</string>
 
     <string name="action_income">Income</string>
     <string name="action_service">Service</string>

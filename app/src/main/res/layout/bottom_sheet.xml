@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:paddingBottom="8dp"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".DriveMate">
 
     <TextView
         android:id="@+id/refuelBtn"

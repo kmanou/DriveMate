@@ -91,7 +91,7 @@
             android:name=".AppActivities.NoteActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".DriveMate"
             android:exported="false" />
         <activity
             android:name=".LoginActivities.CreateAccountActivity"

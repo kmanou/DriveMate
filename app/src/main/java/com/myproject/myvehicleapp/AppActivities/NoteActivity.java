@@ -14,7 +14,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.Query;
 import com.myproject.myvehicleapp.Adapters.NoteAdapter;
 import com.myproject.myvehicleapp.AddActivities.AddEditDeleteNoteActivity;
-import com.myproject.myvehicleapp.MainActivity;
+import com.myproject.myvehicleapp.DriveMate;
 import com.myproject.myvehicleapp.Models.NoteModel;
 import com.myproject.myvehicleapp.R;
 import com.myproject.myvehicleapp.Utilities.Tools;
@@ -63,7 +63,7 @@ public class NoteActivity extends AppCompatActivity {
 
         if (id == android.R.id.home) {
             // Navigate back to the specific activity
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, DriveMate.class);
             startActivity(intent);
             finish();
             return true;

@@ -8,7 +8,7 @@ import android.os.Handler;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.myproject.myvehicleapp.MainActivity;
+import com.myproject.myvehicleapp.DriveMate;
 import com.myproject.myvehicleapp.R;
 
 public class SplashActivity extends AppCompatActivity {
@@ -25,7 +25,7 @@ public class SplashActivity extends AppCompatActivity {
                 if(currentUser==null){
                     startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                 }else{
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    startActivity(new Intent(SplashActivity.this, DriveMate.class));
                 }
                 finish();
             }

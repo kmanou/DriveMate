@@ -16,7 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.myproject.myvehicleapp.MainActivity;
+import com.myproject.myvehicleapp.DriveMate;
 import com.myproject.myvehicleapp.R;
 import com.myproject.myvehicleapp.Utilities.Utility;
 
@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                     //login is success
                     if(firebaseAuth.getCurrentUser().isEmailVerified()){
                         //go to main activity
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        startActivity(new Intent(LoginActivity.this, DriveMate.class));
                         finish();
                     }else{
                         Utility.showToast(LoginActivity.this,"Email not verified, Please verify your email.");

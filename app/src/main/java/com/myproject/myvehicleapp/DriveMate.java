@@ -16,7 +16,7 @@ import com.myproject.myvehicleapp.MenuFragments.RemindersFragment;
 import com.myproject.myvehicleapp.MenuFragments.ReportsFragment;
 import com.myproject.myvehicleapp.Utilities.ActionBottomDialogFragment;
 
-public class MainActivity extends AppCompatActivity implements ActionBottomDialogFragment.ItemClickListener{
+public class DriveMate extends AppCompatActivity implements ActionBottomDialogFragment.ItemClickListener{
 
 
     BottomNavigationView bottomNavigationView;
