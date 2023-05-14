@@ -37,15 +37,18 @@ public class PaymentMethodActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_method);
 
+        // Initialize the toolbar
         mainToolbarPaymentMethod = findViewById(R.id.mainToolbarPaymentMethods);
         setSupportActionBar(mainToolbarPaymentMethod);
         getSupportActionBar().setTitle("Payment Method");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Tools.setSystemBarColor(this, R.color.red_800);
 
+        // Get references to the FloatingActionButton and RecyclerView
         addPaymentMethodBtn = findViewById(R.id.add_payment_method_btn);
         recyclerPaymentMethodView = findViewById(R.id.recycler_payment_method_view);
 
+        // Set a click listener on the addPaymentMethodBtn to open the AddEditDeletePaymentMethodActivity
         addPaymentMethodBtn.setOnClickListener((v) -> startActivity(new Intent(PaymentMethodActivity.this, AddEditDeletePaymentMethodActivity.class)));
 
         // Check if the user is authenticated
@@ -59,26 +62,29 @@ public class PaymentMethodActivity extends AppCompatActivity {
             finish();
         }
 
+        // Check if the activity is launched in select mode
         selectMode = getIntent().getBooleanExtra("selectMode", false);
     }
 
+    // Set up the RecyclerView and Firebase query
     void setupRecyclerView() {
         Query query = Utility.getCollectionReferenceForPaymentMethod().orderBy("paymentMethod", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<PaymentMethodModel> options = new FirestoreRecyclerOptions.Builder<PaymentMethodModel>()
                 .setQuery(query, PaymentMethodModel.class).build();
         recyclerPaymentMethodView.setLayoutManager(new LinearLayoutManager(this));
 
-        paymentMethodAdapter = new PaymentMethodAdapter(options, this, (PaymentMethodModel, docId) -> {
+        // Create an instance of the PaymentMethodAdapter and set it as the adapter for the RecyclerView
+        paymentMethodAdapter = new PaymentMethodAdapter(options, this, (paymentMethodModel, docId) -> {
             if (selectMode) {
+                // Handle payment method selection in select mode
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra("selectedPaymentMethod", PaymentMethodModel.paymentMethod);
+                resultIntent.putExtra("selectedPaymentMethod", paymentMethodModel.paymentMethod);
                 setResult(RESULT_OK, resultIntent);
                 finish();
             } else {
-                // Handle fuel item click here
+                // Handle payment method item click here
                 // For example, you can start a new activity or show a toast
-                Toast.makeText(PaymentMethodActivity.this,
-                        "Clicked on: " + PaymentMethodModel.paymentMethod, Toast.LENGTH_SHORT).show();
+                Toast.makeText(PaymentMethodActivity.this, "Clicked on: " + paymentMethodModel.paymentMethod, Toast.LENGTH_SHORT).show();
             }
         }, selectMode);
 
@@ -87,9 +93,12 @@ public class PaymentMethodActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle menu item clicks
         if (item.getItemId() == android.R.id.home) {
+            // If the home button is clicked, finish the activity and return to the previous screen
             finish();
         } else {
+            // If any other menu item is clicked, show a toast message with the title of the clicked item
             Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
@@ -98,18 +107,21 @@ public class PaymentMethodActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        // Start listening for changes in the FirestoreRecyclerAdapter
         paymentMethodAdapter.startListening();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        // Stop listening for changes in the FirestoreRecyclerAdapter
         paymentMethodAdapter.stopListening();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        // Notify the adapter that the data set has changed
         paymentMethodAdapter.notifyDataSetChanged();
     }
 }

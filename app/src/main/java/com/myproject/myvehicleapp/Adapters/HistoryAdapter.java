@@ -25,17 +25,20 @@ import com.myproject.myvehicleapp.Utilities.Utility;
 
 import java.util.List;
 
+// This class is the adapter for the RecyclerView that displays history data
 public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
     private LiveData<List<HistoryModel>> collectionsLiveData;
-    private int expandedPosition = -1;
+    private int expandedPosition = -1; // Keeps track of the expanded item's position
 
+    // The constructor takes a context and LiveData object that provides the data
     public HistoryAdapter(Context context, LiveData<List<HistoryModel>> collectionsLiveData) {
         this.context = context;
         this.collectionsLiveData = collectionsLiveData;
     }
 
+    // Determines the type of View that should be used for the item at the given position
     @Override
     public int getItemViewType(int position) {
         if (collectionsLiveData.getValue() == null) {
@@ -55,38 +58,40 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
+    // Called when the RecyclerView needs a new ViewHolder of the given type to represent an item
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
         switch (viewType) {
-            case 0:
+            case 0:// Inflate layout for refueling item
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_refueling_item, parent, false);
                 return new RefuelingViewHolder(view);
-            case 1:
+            case 1:// Inflate layout for expense item
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_expense_item, parent, false);
                 return new ExpenseViewHolder(view);
-            case 2:
+            case 2:// Inflate layout for service item
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_service_item, parent, false);
                 return new ServiceViewHolder(view);
-            default:
+            default:// Throw exception for invalid view type
                 throw new IllegalArgumentException("Invalid view type");
         }
     }
 
+    // Called by RecyclerView to display the data at the specified position
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         HistoryModel collection = collectionsLiveData.getValue().get(position);
-        boolean isExpanded = position == expandedPosition;
+        boolean isExpanded = position == expandedPosition; // Check if this position is the expanded item
 
         switch (holder.getItemViewType()) {
-            case 0:
+            case 0: // Handle refueling item
                 RefuelingViewHolder refuelingViewHolder = (RefuelingViewHolder) holder;
                 refuelingViewHolder.refuelingRecyclerTypeTitle.setText(collection.getRecyclerTitle());
 
                 RefuelingModel refuelingModel = collection.getRefuelingModel();
 
-                if (refuelingModel != null) { // CHANGED: Added null check for refuelingModel
+                if (refuelingModel != null) { // Ensure the refueling model is not null before binding data to views
                     // Bind other views as needed
                     refuelingViewHolder.refuelingRecyclerTypeTitle.setText(refuelingModel.recyclerTitle);
                     refuelingViewHolder.refuelingDateTime.setText(Utility.timestampToString(refuelingModel.refuelingTimestamp));
@@ -97,7 +102,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     refuelingViewHolder.refuelingTotalPrice.setText(String.valueOf(refuelingModel.refuelingTotalCost));
                 }
 
+                // Set click listener for the edit button
                 refuelingViewHolder.refuelingEditBtn.setOnClickListener((v)-> {
+                    // Create an intent for the AddEditDeleteRefuelingActivity and put extras
                     Intent intent = new Intent(context, AddEditDeleteRefuelingActivity.class);
 
                     intent.putExtra("refuelingTimestamp", refuelingModel.refuelingTimestamp);
@@ -113,26 +120,31 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     intent.putExtra("docId", docId);
 
                     context.startActivity(intent);
-                    notifyDataSetChanged();
+                    notifyDataSetChanged(); // Notify the adapter that the data set has changed
                 });
 
-                refuelingViewHolder.refuelinglinearLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+                // Toggle visibility of the LinearLayout based on the expanded state
+                refuelingViewHolder.refuelingLinearLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+                // Set click listener for the card that reveals the refueling data
                 refuelingViewHolder.revealRefuelingCard.setOnClickListener(view -> {
                     int previousExpandedPosition = expandedPosition;
+                    // Update the expanded position
                     expandedPosition = position == expandedPosition ? -1 : position;
+                    // If a previous item was expanded, notify it to update
                     if (previousExpandedPosition != -1) {
                         notifyItemChanged(previousExpandedPosition);
                     }
+                    // Notify the current item to update
                     notifyItemChanged(position);
                 });
                 break;
-            case 1:
+            case 1: // Handle expense item
                 ExpenseViewHolder expenseViewHolder = (ExpenseViewHolder) holder;
                 expenseViewHolder.expenseRecyclerTypeTitle.setText(collection.getRecyclerTitle());
 
                 ExpenseModel expenseModel = collection.getExpenseModel();
 
-                if (expenseModel != null) { // CHANGED: Added null check for expenseModel
+                if (expenseModel != null) { // Ensure the expense model is not null before binding data to views
                     // Bind other views as needed
                     expenseViewHolder.expenseRecyclerTypeTitle.setText(expenseModel.recyclerTitle);
                     expenseViewHolder.expenseDateTime.setText(Utility.timestampToString(expenseModel.expenseTimeStamp));
@@ -141,7 +153,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     expenseViewHolder.expenseTotalPrice.setText(String.valueOf(expenseModel.expenseTotalCost));
                 }
 
+                // Set click listener for the edit button
                 expenseViewHolder.expenseEditBtn.setOnClickListener((v)->{
+                    // Create an intent for the AddEditDeleteExpenseActivity and put extras
                     Intent intent = new Intent(context, AddEditDeleteExpenseActivity.class);
 
                     intent.putExtra("expenseTimeStamp",expenseModel.expenseTimeStamp);
@@ -154,27 +168,33 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     intent.putExtra("docId",docId);
 
                     context.startActivity(intent);
-                    notifyDataSetChanged();
+                    notifyDataSetChanged(); // Notify the adapter that the data set has changed
                 });
 
+                // Toggle visibility of the LinearLayout based on the expanded state
                 expenseViewHolder.expenseLinearLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+                // Set click listener for the card that reveals the expense data
                 expenseViewHolder.revealExpenseCard.setOnClickListener(view -> {
                     int previousExpandedPosition = expandedPosition;
+                    // Update the expanded position
                     expandedPosition = position == expandedPosition ? -1 : position;
+                    // If a previous item was expanded, notify it to update
                     if (previousExpandedPosition != -1) {
                         notifyItemChanged(previousExpandedPosition);
                     }
+                    // Notify the current item to update
                     notifyItemChanged(position);
                 });
 
                 break;
-            case 2:
+            case 2: // Handle service item
                 ServiceViewHolder serviceViewHolder = (ServiceViewHolder) holder;
+                // Set the title of this service item
                 serviceViewHolder.serviceRecyclerTypeTitle.setText(collection.getRecyclerTitle());
 
                 ServiceModel serviceModel = collection.getServiceModel();
 
-                if (serviceModel != null) { // CHANGED: Added null check for serviceModel
+                if (serviceModel != null) { // Ensure the service model is not null before binding data to views
                     // Bind other views as needed
                     serviceViewHolder.serviceRecyclerTypeTitle.setText(serviceModel.recyclerTitle);
                     serviceViewHolder.serviceDateTime.setText(Utility.timestampToString(serviceModel.serviceTimeStamp));
@@ -182,8 +202,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     serviceViewHolder.serviceTypeOfService.setText(String.valueOf(serviceModel.serviceTypeOfService));
                     serviceViewHolder.serviceTotalPrice.setText(String.valueOf(serviceModel.serviceTotalCost));
                 }
-
+                // Set click listener for the edit button
                 serviceViewHolder.serviceEditBtn.setOnClickListener((v)->{
+                    // Create an intent for the AddEditDeleteServiceActivity and put extras
                     Intent intent = new Intent(context, AddEditDeleteServiceActivity.class);
 
                     intent.putExtra("serviceTimeStamp",serviceModel.serviceTimeStamp);
@@ -196,16 +217,21 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     intent.putExtra("docId",docId);
 
                     context.startActivity(intent);
-                    notifyDataSetChanged();
+                    notifyDataSetChanged(); // Notify the adapter that the data set has changed
                 });
 
+                // Toggle visibility of the LinearLayout based on the expanded state
                 serviceViewHolder.serviceLinearLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+                // Set click listener for the card that reveals the expense data
                 serviceViewHolder.revealServiceCard.setOnClickListener(view -> {
                     int previousExpandedPosition = expandedPosition;
+                    // Update the expanded position
                     expandedPosition = position == expandedPosition ? -1 : position;
+                    // If a previous item was expanded, notify it to update
                     if (previousExpandedPosition != -1) {
                         notifyItemChanged(previousExpandedPosition);
                     }
+                    // Notify the current item to update
                     notifyItemChanged(position);
                 });
                 break;
@@ -216,52 +242,54 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemCount() {
+        // Return the size of the data set, or 0 if the data set is null
         return collectionsLiveData.getValue() != null ? collectionsLiveData.getValue().size() : 0;
     }
 
+    // ViewHolder for refueling items
     public class RefuelingViewHolder extends RecyclerView.ViewHolder {
 
+        //Define views
         TextView refuelingRecyclerTypeTitle;
         TextView refuelingDateTime;
         TextView refuelingTotalLitres;
         TextView refuelingTypeOfFuel;
         TextView refuelingCostPerLitre;
-        //TextView refuelingFuelConsumption;
         TextView refuelingOdometer;
         TextView refuelingTotalPrice;
         ImageView refuelingEditBtn;
-        LinearLayout refuelinglinearLayout;
+        LinearLayout refuelingLinearLayout;
         View revealRefuelingCard;
+
         public RefuelingViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            refuelinglinearLayout = itemView.findViewById(R.id.expanded_refueling_menu);
-            //linearLayout.setVisibility(View.GONE);
+            // Initialize views
+            refuelingLinearLayout = itemView.findViewById(R.id.expanded_refueling_menu);
             revealRefuelingCard = itemView.findViewById(R.id.revealRefueling);
-            // Initialize other views as needed
-
             refuelingEditBtn = itemView.findViewById(R.id.refueling_edit_btn);
-
             refuelingRecyclerTypeTitle = itemView.findViewById(R.id.refuelingRecyclerTypeTitleTVItem);
             refuelingDateTime = itemView.findViewById(R.id.refuelingDateTVItem);
-
             refuelingTotalLitres = itemView.findViewById(R.id.refuelingTotalLitresTVItem);
             refuelingTypeOfFuel = itemView.findViewById(R.id.refuelingTypeOfFuelTVItem);
             refuelingCostPerLitre = itemView.findViewById(R.id.refuelingCostPerLitreTVItem);
-            //refuelingFuelConsumption = itemView.findViewById(R.id.refuelingFuelConsumptionTVItem);
             refuelingOdometer = itemView.findViewById(R.id.refuelingOdometerCounterTVItem);
             refuelingTotalPrice = itemView.findViewById(R.id.refuelingTotalPriceTVItem);
 
+            // Set click listener for the item view
             itemView.setOnClickListener(view -> {
+                // If the clicked item is already expanded, collapse it
                 if (expandedPosition == getBindingAdapterPosition()) {
                     expandedPosition = -1;
                     notifyItemChanged(getBindingAdapterPosition());
                 } else {
+                    // If there is another item expanded, collapse it
                     if (expandedPosition != -1) {
                         int oldExpandedPosition = expandedPosition;
                         expandedPosition = -1;
                         notifyItemChanged(oldExpandedPosition);
                     }
+                    // Expand the clicked item
                     expandedPosition = getBindingAdapterPosition();
                     notifyItemChanged(getBindingAdapterPosition());
                 }
@@ -269,8 +297,10 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
+    // ViewHolder for expense items
     public class ExpenseViewHolder extends RecyclerView.ViewHolder {
 
+        //Define views
         TextView expenseRecyclerTypeTitle;
         TextView expenseDateTime;
         TextView expenseOdometer;
@@ -283,30 +313,31 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         public ExpenseViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            // Initialize views as needed
             expenseLinearLayout = itemView.findViewById(R.id.expanded_expense_menu);
             revealExpenseCard = itemView.findViewById(R.id.revealExpense);
             expenseLinearLayout.setVisibility(View.GONE);
-
-            // Initialize other views as needed
-
             expenseEditBtn = itemView.findViewById(R.id.expense_edit_btn);
-
             expenseRecyclerTypeTitle = itemView.findViewById(R.id.expenseRecyclerTypeTitleTVItem);
             expenseDateTime = itemView.findViewById(R.id.expenseDateTVItem);
             expenseOdometer = itemView.findViewById(R.id.expenseOdometerCounterTVItem);
             expenseTypeOfExpense = itemView.findViewById(R.id.expenseTypeOfExpenseTVItem);
             expenseTotalPrice = itemView.findViewById(R.id.expenseTotalPriceTVItem);
 
+            // Set click listener for the item view
             itemView.setOnClickListener(view -> {
+                // If the clicked item is already expanded, collapse it
                 if (expandedPosition == getBindingAdapterPosition()) {
                     expandedPosition = -1;
                     notifyItemChanged(getBindingAdapterPosition());
                 } else {
+                    // If there is another item expanded, collapse it
                     if (expandedPosition != -1) {
                         int oldExpandedPosition = expandedPosition;
                         expandedPosition = -1;
                         notifyItemChanged(oldExpandedPosition);
                     }
+                    // Expand the clicked item
                     expandedPosition = getBindingAdapterPosition();
                     notifyItemChanged(getBindingAdapterPosition());
                 }
@@ -314,8 +345,10 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
+    // ViewHolder for service items
     public class ServiceViewHolder extends RecyclerView.ViewHolder {
 
+        //Define Views
         TextView serviceRecyclerTypeTitle;
         TextView serviceDateTime;
         TextView serviceOdometer;
@@ -328,28 +361,30 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         public ServiceViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            // Initialize views
             serviceLinearLayout = itemView.findViewById(R.id.expanded_service_menu);
             revealServiceCard = itemView.findViewById(R.id.revealService);
-
-            // Initialize other views as needed
             serviceEditBtn = itemView.findViewById(R.id.service_edit_btn);
-
             serviceRecyclerTypeTitle = itemView.findViewById(R.id.serviceRecyclerTypeTitleTVItem);
             serviceDateTime = itemView.findViewById(R.id.serviceDateTVItem);
             serviceOdometer = itemView.findViewById(R.id.serviceOdometerCounterTVItem);
             serviceTypeOfService = itemView.findViewById(R.id.serviceTypeOfServiceTVItem);
             serviceTotalPrice = itemView.findViewById(R.id.serviceTotalPriceTVItem);
 
+            // Set a click listener on the item view
             itemView.setOnClickListener(view -> {
+                // If the clicked item is already expanded, collapse it
                 if (expandedPosition == getBindingAdapterPosition()) {
                     expandedPosition = -1;
                     notifyItemChanged(getBindingAdapterPosition());
                 } else {
+                    // If there is another item expanded, collapse it
                     if (expandedPosition != -1) {
                         int oldExpandedPosition = expandedPosition;
                         expandedPosition = -1;
                         notifyItemChanged(oldExpandedPosition);
                     }
+                    // Expand the clicked item
                     expandedPosition = getBindingAdapterPosition();
                     notifyItemChanged(getBindingAdapterPosition());
                 }

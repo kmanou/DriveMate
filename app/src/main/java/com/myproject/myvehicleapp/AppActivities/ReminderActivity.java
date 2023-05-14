@@ -36,18 +36,15 @@ public class ReminderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reminder);
 
         mainToolbarReminder = findViewById(R.id.mainToolbarReminderACT);
-
         setSupportActionBar(mainToolbarReminder);
         getSupportActionBar().setTitle("My Reminders");
-        Tools.setSystemBarColor(this, R.color.red_800);
-
         Tools.setSystemBarColor(this, R.color.red_800);
 
         addReminderBtn = findViewById(R.id.add_reminder_btn);
         recyclerView = findViewById(R.id.reminder_recycler_view_act);
 
-        addReminderBtn.setOnClickListener((v)-> startActivity(
-                new Intent(ReminderActivity.this, AddEditDeleteReminderActivity.class)) );
+        // Set a click listener for the "Add Reminder" button to open the AddEditDeleteReminderActivity
+        addReminderBtn.setOnClickListener((v) -> startActivity(new Intent(ReminderActivity.this, AddEditDeleteReminderActivity.class)));
 
         // Check if the user is authenticated
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -59,33 +56,39 @@ public class ReminderActivity extends AppCompatActivity {
             startActivity(new Intent(ReminderActivity.this, LoginActivity.class));
             finish();
         }
-        //return false;
     }
 
-    void setupRecyclerView(){
-        Query query  = Utility.getCollectionReferenceForReminders().orderBy("reminderTimestamp",Query.Direction.DESCENDING);
+    // Method to set up the RecyclerView with reminder data
+    void setupRecyclerView() {
+        // Construct a query to retrieve reminder data from the Firestore database
+        Query query = Utility.getCollectionReferenceForReminders().orderBy("reminderTimestamp", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<ReminderModel> options = new FirestoreRecyclerOptions.Builder<ReminderModel>()
                 .setQuery(query, ReminderModel.class).build();
+
+        // Set the layout manager and adapter for the RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        reminderAdapter = new ReminderAdapter(options,this);
+        reminderAdapter = new ReminderAdapter(options, this);
         recyclerView.setAdapter(reminderAdapter);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        // Start listening for changes in the Firestore data and update the adapter accordingly
         reminderAdapter.startListening();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        // Stop listening for changes in the Firestore data
         reminderAdapter.stopListening();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        // Notify the adapter to update the view in case of any changes
         reminderAdapter.notifyDataSetChanged();
     }
 }

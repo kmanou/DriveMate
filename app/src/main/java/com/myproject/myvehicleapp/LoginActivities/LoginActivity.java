@@ -22,7 +22,7 @@ import com.myproject.myvehicleapp.Utilities.Utility;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText emailEditText,passwordEditText;
+    EditText emailEditText, passwordEditText;
     Button loginBtn;
     ProgressBar progressBar;
     TextView createAccountBtnTextView;
@@ -32,74 +32,79 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Initialize UI elements
         emailEditText = findViewById(R.id.email_edit_text);
         passwordEditText = findViewById(R.id.password_edit_text);
         loginBtn = findViewById(R.id.login_btn);
         progressBar = findViewById(R.id.progress_bar);
         createAccountBtnTextView = findViewById(R.id.create_account_text_view_btn);
 
-        loginBtn.setOnClickListener((v)-> loginUser() );
-        createAccountBtnTextView.setOnClickListener((v)->startActivity(new Intent(LoginActivity.this, CreateAccountActivity.class)) );
-
+        // Set click listeners for the loginBtn and createAccountBtnTextView
+        loginBtn.setOnClickListener((v) -> loginUser());
+        createAccountBtnTextView.setOnClickListener((v) -> startActivity(new Intent(LoginActivity.this, CreateAccountActivity.class)));
     }
 
-    void loginUser(){
-        String email  = emailEditText.getText().toString();
-        String password  = passwordEditText.getText().toString();
+    void loginUser() {
+        // Retrieve the email and password from the input fields
+        String email = emailEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
 
-
-        boolean isValidated = validateData(email,password);
-        if(!isValidated){
+        // Validate the data entered by the user
+        boolean isValidated = validateData(email, password);
+        if (!isValidated) {
             return;
         }
 
-        loginAccountInFirebase(email,password);
-
+        // Log in to the account in Firebase
+        loginAccountInFirebase(email, password);
     }
 
-    void loginAccountInFirebase(String email,String password){
+    void loginAccountInFirebase(String email, String password) {
+        // Get the Firebase Authentication instance and sign in with the email and password
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         changeInProgress(true);
-        firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+                // Hide progress bar and enable loginBtn after the login process is complete
                 changeInProgress(false);
-                if(task.isSuccessful()){
-                    //login is success
-                    if(firebaseAuth.getCurrentUser().isEmailVerified()){
-                        //go to main activity
+
+                if (task.isSuccessful()) {
+                    // Login is successful
+                    if (firebaseAuth.getCurrentUser().isEmailVerified()) {
+                        // Go to the main activity
                         startActivity(new Intent(LoginActivity.this, DriveMate.class));
                         finish();
-                    }else{
-                        Utility.showToast(LoginActivity.this,"Email not verified, Please verify your email.");
+                    } else {
+                        Utility.showToast(LoginActivity.this, "Email not verified. Please verify your email.");
                     }
-
-                }else{
-                    //login failed
-                    Utility.showToast(LoginActivity.this,task.getException().getLocalizedMessage());
+                } else {
+                    // Login failed
+                    Utility.showToast(LoginActivity.this, task.getException().getLocalizedMessage());
                 }
             }
         });
     }
 
-    void changeInProgress(boolean inProgress){
-        if(inProgress){
+    void changeInProgress(boolean inProgress) {
+        // Show or hide the progress bar and loginBtn based on the inProgress parameter
+        if (inProgress) {
             progressBar.setVisibility(View.VISIBLE);
             loginBtn.setVisibility(View.GONE);
-        }else{
+        } else {
             progressBar.setVisibility(View.GONE);
             loginBtn.setVisibility(View.VISIBLE);
         }
     }
 
-    boolean validateData(String email,String password){
-        //validate the data that are input by user.
+    boolean validateData(String email, String password) {
+        // Validate the data entered by the user
 
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailEditText.setError("Email is invalid");
             return false;
         }
-        if(password.length()<6){
+        if (password.length() < 6) {
             passwordEditText.setError("Password length is invalid");
             return false;
         }

@@ -33,7 +33,6 @@ public class RefuelingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_refueling);
 
         mainToolbarRefueling = findViewById(R.id.mainToolbarRefueling);
-
         setSupportActionBar(mainToolbarRefueling);
         getSupportActionBar().setTitle("My Refuels");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -42,6 +41,7 @@ public class RefuelingActivity extends AppCompatActivity {
         addRefuelingBtn = findViewById(R.id.add_refueling_btn);
         recyclerRefuelingView = findViewById(R.id.refueling_recycler_view);
 
+        // Set a click listener for the "Add Refueling" button to open the AddEditDeleteRefuelingActivity
         addRefuelingBtn.setOnClickListener((v) -> startActivity(new Intent(RefuelingActivity.this, AddEditDeleteRefuelingActivity.class)));
 
         // Check if the user is authenticated
@@ -56,10 +56,14 @@ public class RefuelingActivity extends AppCompatActivity {
         }
     }
 
+    // Method to set up the RecyclerView with refueling data
     void setupRecyclerView() {
+        // Construct a query to retrieve refueling data from the Firestore database
         Query query = Utility.getCollectionReferenceForRefueling().limit(10).orderBy("refuelingTimestamp", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<RefuelingModel> options = new FirestoreRecyclerOptions.Builder<RefuelingModel>()
                 .setQuery(query, RefuelingModel.class).build();
+
+        // Set the layout manager and adapter for the RecyclerView
         recyclerRefuelingView.setLayoutManager(new LinearLayoutManager(this));
         refuelingAdapter = new RefuelingAdapter(options, this);
         recyclerRefuelingView.setAdapter(refuelingAdapter);
@@ -68,18 +72,21 @@ public class RefuelingActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        // Start listening for changes in the Firestore data and update the adapter accordingly
         refuelingAdapter.startListening();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        // Stop listening for changes in the Firestore data
         refuelingAdapter.stopListening();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        // Notify the adapter to update the view in case of any changes
         refuelingAdapter.notifyDataSetChanged();
     }
 }

@@ -34,7 +34,6 @@ public class NoteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_note);
 
         mainToolbarNotes = findViewById(R.id.mainToolbarNotes);
-
         setSupportActionBar(mainToolbarNotes);
         getSupportActionBar().setTitle("My Notes");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -43,15 +42,21 @@ public class NoteActivity extends AppCompatActivity {
         addNoteBtn = findViewById(R.id.add_note_btn);
         noteRecyclerView = findViewById(R.id.note_recycler_view);
 
+        // Set a click listener for the "Add Note" button to open the AddEditDeleteNoteActivity
         addNoteBtn.setOnClickListener((v)-> startActivity(new Intent(NoteActivity.this, AddEditDeleteNoteActivity.class)) );
 
+        // Set up the RecyclerView to display the notes
         setupRecyclerView();
     }
 
+    // Method to set up the RecyclerView with note data
     void setupRecyclerView(){
+        // Construct a query to retrieve note data from the Firestore database
         Query query  = Utility.getCollectionReferenceForNotes().orderBy("timestamp",Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<NoteModel> options = new FirestoreRecyclerOptions.Builder<NoteModel>()
                 .setQuery(query,NoteModel.class).build();
+
+        // Set the layout manager and adapter for the RecyclerView
         noteRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         noteAdapter = new NoteAdapter(options,this);
         noteRecyclerView.setAdapter(noteAdapter);
@@ -75,18 +80,21 @@ public class NoteActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        // Start listening for changes in the Firestore data and update the adapter accordingly
         noteAdapter.startListening();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        // Stop listening for changes in the Firestore data
         noteAdapter.stopListening();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        // Notify the adapter to update the view in case of any changes
         noteAdapter.notifyDataSetChanged();
     }
 }

@@ -56,6 +56,7 @@ public class ServiceActivity extends AppCompatActivity {
     }
 
     void setupRecyclerView() {
+        // Retrieve the service data from Firestore and configure the RecyclerView
         Query query = Utility.getCollectionReferenceForService().limit(10).orderBy("serviceTimeStamp", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<ServiceModel> options = new FirestoreRecyclerOptions.Builder<ServiceModel>()
                 .setQuery(query, ServiceModel.class).build();
@@ -67,18 +68,21 @@ public class ServiceActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        // Start listening for changes in the Firestore data
         serviceAdapter.startListening();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        // Stop listening for changes in the Firestore data
         serviceAdapter.stopListening();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        // Notify the adapter that the data has changed (in case of updates)
         serviceAdapter.notifyDataSetChanged();
     }
 }

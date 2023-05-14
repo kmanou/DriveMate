@@ -94,6 +94,7 @@ public class AddEditDeleteServiceActivity extends AppCompatActivity {
         serviceNote = getIntent().getStringExtra("serviceNote");
         docId = getIntent().getStringExtra("docId");
 
+        // Check if we are in edit mode
         if(docId!=null && !docId.isEmpty()){
             isEditMode = true;
         }
@@ -155,36 +156,48 @@ public class AddEditDeleteServiceActivity extends AppCompatActivity {
         });
     }
 
+    // Method to open PaymentMethodActivity
     private void openPaymentMethodActivity() {
         Intent intent = new Intent(this, PaymentMethodActivity.class);
         intent.putExtra("selectMode", true);
         paymentMethodActivityResultLauncher.launch(intent);
     }
 
+    // Method to open TypeOfServiceActivity
     private void openServiceTypeActivity() {
         Intent intent = new Intent(this, TypeOfServiceActivity.class);
         intent.putExtra("selectMode", true);
         serviceActivityResultLauncher.launch(intent);
     }
 
+    // Method to save service data
     void saveService() {
+        // Getting the entered values
+
+        // Retrieve the refueling date from the user input
         String serviceDate = Objects.requireNonNull(serviceDatePickerTI.getText()).toString();
+        // Retrieve the refueling time from the user input
         String serviceTime = Objects.requireNonNull(serviceTimePickerTI.getText()).toString();
 
+        // Retrieve the refueling odometer reading from the user input
         String serviceOdometerStr = serviceOdometerTI.getText().toString();
+        // If the user has not entered a value for the refueling odometer reading, display an error message
         if (serviceOdometerStr.isEmpty()) {
             serviceOdometerTI.setError("Odometer is required");
             return;
         }
 
-        Integer serviceOdometer;
+        // Parse the string value of the refueling odometer reading to an integer
+        int serviceOdometer;
         try {
             serviceOdometer = Integer.parseInt(serviceOdometerStr);
         } catch (NumberFormatException e) {
+            // If the parsing fails, display an error message
             serviceOdometerTI.setError("Invalid odometer value");
             return;
         }
 
+        // Retrieve the service type from the user input
         String serviceTypeOfService = serviceTypeOfServiceTI.getText().toString();
 
         String serviceTotalCostStr = serviceTotalCostTI.getText().toString();
@@ -193,18 +206,18 @@ public class AddEditDeleteServiceActivity extends AppCompatActivity {
             return;
         }
 
-        Float serviceTotalCost;
+        // Parse the string value of the refueling total cost to a float
+        float serviceTotalCost;
         try {
             serviceTotalCost = Float.parseFloat(serviceTotalCostStr);
         } catch (NumberFormatException e) {
+            // If the parsing fails, display an error message
             serviceTotalCostTI.setError("Invalid total cost value");
             return;
         }
 
         String servicePaymentMethod = servicePaymentMethodTI.getText().toString();
-
         String serviceNote = serviceNoteTI.getText().toString();
-
 
         // Create a Date object from the refuelingDate and refuelingTime strings
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
@@ -257,6 +270,7 @@ public class AddEditDeleteServiceActivity extends AppCompatActivity {
         });
     }
 
+    // Method to delete service from Firebase
     void deleteServiceFromFirebase(){
         DocumentReference documentReference;
         documentReference = Utility.getCollectionReferenceForService().document(docId);
@@ -274,8 +288,10 @@ public class AddEditDeleteServiceActivity extends AppCompatActivity {
         });
     }
 
+    // Override onCreateOptionsMenu to inflate custom menu and set visibility of save and delete buttons
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu and handle visibility of menu items based on edit mode
         getMenuInflater().inflate(R.menu.save_service_menu, menu);
 
         MenuItem saveItem = menu.findItem(R.id.saveServiceBtn);
@@ -284,6 +300,7 @@ public class AddEditDeleteServiceActivity extends AppCompatActivity {
         saveItem.setVisible(true);
         deleteItem.setVisible(false);
 
+        // Set visibility of save and delete buttons based on the mode
         if(isEditMode){
             getSupportActionBar().setTitle("Edit your service");
             saveItem.setVisible(true);
@@ -293,12 +310,14 @@ public class AddEditDeleteServiceActivity extends AppCompatActivity {
         return true;
     }
 
+    // Override onOptionsItemSelected to handle button click events
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+        // Perform different actions based on the clicked item's ID
         switch (id) {
             case R.id.saveServiceBtn:
-                // Handle edit icon click
+                // Handle save button click
                 saveService();
                 return true;
             case R.id.deleteServiceBtn:
@@ -306,6 +325,7 @@ public class AddEditDeleteServiceActivity extends AppCompatActivity {
                 deleteServiceFromFirebase();
                 return true;
             case android.R.id.home:
+                // Handle home (back) button click
                 finish();
                 return true;
             default:
@@ -313,6 +333,7 @@ public class AddEditDeleteServiceActivity extends AppCompatActivity {
         }
     }
 
+    // Method to show date picker dialog
     public void showDatePicker(View view) {
         final Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
@@ -332,6 +353,7 @@ public class AddEditDeleteServiceActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+    // Method to show time picker dialog
     public void showTimePicker(View view) {
         final Calendar calendar = Calendar.getInstance();
         // Create a new instance of TimePickerDialog and return it
@@ -351,5 +373,4 @@ public class AddEditDeleteServiceActivity extends AppCompatActivity {
 
         timePickerDialog.show();
     }
-
 }

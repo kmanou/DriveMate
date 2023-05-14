@@ -7,13 +7,15 @@
     android:layout_marginVertical="16dp"
     android:layout_marginHorizontal="32dp"
     tools:context=".LoginActivities.CreateAccountActivity">
+
     <ImageView
+        android:id="@+id/sign_up_icon"
         android:layout_width="128dp"
         android:layout_height="128dp"
         android:layout_centerHorizontal="true"
         android:layout_marginVertical="32dp"
-        android:id="@+id/sign_up_icon"
-        android:src="@drawable/sign_up"/>
+        android:src="@drawable/ic_car_logo"
+        app:tint="@color/amber_900" />
 
     <LinearLayout
         android:layout_width="match_parent"

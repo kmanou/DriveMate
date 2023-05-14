@@ -36,17 +36,19 @@ public class FuelActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fuel);
 
+        // Initialize the toolbar
         mainToolbarFuel = findViewById(R.id.mainToolbarFuels);
-
         setSupportActionBar(mainToolbarFuel);
         getSupportActionBar().setTitle("Fuel");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Tools.setSystemBarColor(this, R.color.red_800);
 
+        // Get references to the FloatingActionButton and RecyclerView
         addFuelBtn = findViewById(R.id.add_fuel_btn);
         recyclerFuelView = findViewById(R.id.recycler_fuel_view);
 
-        addFuelBtn.setOnClickListener((v)-> startActivity(new Intent(FuelActivity.this, AddEditDeleteFuelActivity.class)) );
+        // Set a click listener on the addFuelBtn to open the AddEditDeleteFuelActivity
+        addFuelBtn.setOnClickListener((v) -> startActivity(new Intent(FuelActivity.this, AddEditDeleteFuelActivity.class)));
 
         // Check if the user is authenticated
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -59,20 +61,23 @@ public class FuelActivity extends AppCompatActivity {
             finish();
         }
 
+        // Check if the activity is launched in select mode
         selectMode = getIntent().getBooleanExtra("selectMode", false);
     }
 
+    // Set up the RecyclerView and Firebase query
     void setupRecyclerView() {
         Query query = Utility.getCollectionReferenceForFuels().orderBy("fuelName", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<FuelModel> options = new FirestoreRecyclerOptions.Builder<FuelModel>()
                 .setQuery(query, FuelModel.class).build();
         recyclerFuelView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Create an instance of the FuelAdapter and set it as the adapter for the RecyclerView
         fuelAdapter = new FuelAdapter(options, this, (fuelModel, docId) -> {
             if (selectMode) {
+                // Handle fuel item selection in select mode
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("selectedFuelName", fuelModel.fuelName);
-                //resultIntent.putExtra("selectedFuelType", fuelModel.fuelType);
                 setResult(RESULT_OK, resultIntent);
                 finish();
             } else {
@@ -86,9 +91,12 @@ public class FuelActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle menu item clicks
         if (item.getItemId() == android.R.id.home) {
+            // If the home button is clicked, finish the activity and return to the previous screen
             finish();
         } else {
+            // If any other menu item is clicked, show a toast message with the title of the clicked item
             Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
@@ -97,18 +105,21 @@ public class FuelActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        // Start listening for changes in the FirestoreRecyclerAdapter
         fuelAdapter.startListening();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        // Stop listening for changes in the FirestoreRecyclerAdapter
         fuelAdapter.stopListening();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        // Notify the adapter that the data set has changed
         fuelAdapter.notifyDataSetChanged();
     }
 }

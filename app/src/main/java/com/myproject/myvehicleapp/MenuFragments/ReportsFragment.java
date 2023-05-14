@@ -22,11 +22,9 @@ import com.myproject.myvehicleapp.Utilities.Tools;
 
 public class ReportsFragment extends Fragment {
 
-
     private TabLayout tabLayoutReports;
     private ViewPager2 viewPagerReports;
     private Toolbar mainToolbarReport;
-
 
     public ReportsFragment() {
         // Required empty public constructor
@@ -35,6 +33,7 @@ public class ReportsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_reports, container, false);
 
         mainToolbarReport = view.findViewById(R.id.mainToolbarReport);
@@ -42,19 +41,19 @@ public class ReportsFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Reports");
         Tools.setSystemBarColor(getActivity(), R.color.red_800);
 
-
         tabLayoutReports = view.findViewById(R.id.tabLayoutReports);
         viewPagerReports = view.findViewById(R.id.viewPagerReports);
 
+        // Create an instance of the ReportAdapter and set it to the ViewPager2
         ReportAdapter adapter = new ReportAdapter(getChildFragmentManager(), getLifecycle());
-
         viewPagerReports.setAdapter(adapter);
 
+        // Set up the TabLayout with the ViewPager2 using TabLayoutMediator
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayoutReports, viewPagerReports,
                 true, true, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-
+                // Set the tab text based on the position
                 switch (position) {
                     case 0:
                         tab.setText("General");
@@ -72,6 +71,7 @@ public class ReportsFragment extends Fragment {
             }
         });
         tabLayoutMediator.attach();
+
         return view;
     }
 }

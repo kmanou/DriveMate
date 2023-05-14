@@ -98,5 +98,6 @@
     <string name="types_of_expense">Types of Expense</string>
     <string name="payment_methods">Payment Methods</string>
     <string name="drivemate">DriveMate</string>
+    <string name="logout">Logout</string>
 
 </resources>

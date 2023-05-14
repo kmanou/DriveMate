@@ -2,20 +2,25 @@ package com.myproject.myvehicleapp.Models;
 
 import com.google.firebase.Timestamp;
 
+// This class serves as a data model for a Refueling object
 public class RefuelingModel {
 
-    public String recyclerTitle;
-    public Integer refuelingOdometer;
-    public String refuelingFuelType;
-    public Float refuelingPricePerLitre;
-    public Float refuelingTotalCost;
-    public Float refuelingFuelLitres;
-    public String refuelingPaymentMethod;
-    public String refuelingNote;
-    public Timestamp refuelingTimestamp;
 
+    public String recyclerTitle; //The title for the Recycler view item
+    public Integer refuelingOdometer; //The odometer reading at the time of refueling
+    public String refuelingFuelType; //The type of fuel used for refueling
+    public Float refuelingPricePerLitre; //The price per litre of the fuel used
+    public Float refuelingTotalCost; //The total cost of the refueling
+    public Float refuelingFuelLitres; //The quantity of fuel in litres bought during refueling
+    public String refuelingPaymentMethod; //The payment method used for the refueling
+    public String refuelingNote; //Any additional notes related to the refueling
+    public Timestamp refuelingTimestamp; //The timestamp when the refueling took place
+
+    // Default constructor
     public RefuelingModel() {
     }
+
+    // Getter and Setter methods for each field
 
     public String getRecyclerTitle() {
         return recyclerTitle;

@@ -11,17 +11,24 @@ import com.myproject.myvehicleapp.ReportsFragments.GeneralReportFragment;
 import com.myproject.myvehicleapp.ReportsFragments.RefuelingReportFragment;
 import com.myproject.myvehicleapp.ReportsFragments.ServiceReportFragment;
 
+// This class is a FragmentStateAdapter that handles the fragments for the reporting feature.
 public class ReportAdapter extends FragmentStateAdapter {
 
+    // Constructor for ReportAdapter that receives the FragmentManager and Lifecycle.
+    // These parameters are passed to the super constructor of FragmentStateAdapter.
     public ReportAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
         super(fragmentManager, lifecycle);
     }
 
+    // This method creates the Fragment corresponding to the specified position.
     @NonNull
     @Override
     public Fragment createFragment(int position) {
         Fragment fragment;
 
+        // Depending on the position, instantiate the corresponding Fragment.
+        // Currently, there are four fragments: GeneralReportFragment, RefuelingReportFragment,
+        // ExpenseReportFragment, and ServiceReportFragment.
         switch (position){
             case 0:
                 fragment = GeneralReportFragment.newInstance();
@@ -36,14 +43,18 @@ public class ReportAdapter extends FragmentStateAdapter {
                 fragment = ServiceReportFragment.newInstance();
                 break;
             default:
-                return null;
+                return null; // Return null if position is out of range.
         }
 
+        // Return the instantiated fragment.
         return fragment;
     }
 
+    // This method returns the total number of fragments.
+    // Currently, there are four fragments, so it returns 4.
     @Override
     public int getItemCount() {
         return 4;
     }
 }
+

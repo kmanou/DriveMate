@@ -16,7 +16,6 @@ public class ReportActivity extends AppCompatActivity {
     private TabLayout tabLayoutReports;
     private ViewPager2 viewPagerReports;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,17 +24,17 @@ public class ReportActivity extends AppCompatActivity {
         tabLayoutReports = findViewById(R.id.tabLayoutReports);
         viewPagerReports = findViewById(R.id.viewPagerReports);
 
+        // Create an instance of the ReportAdapter and set it as the adapter for the ViewPager2
         ReportAdapter adapter = new ReportAdapter(getSupportFragmentManager(), getLifecycle());
-
         viewPagerReports.setAdapter(adapter);
 
+        // Set up the TabLayout and connect it with the ViewPager2 using TabLayoutMediator
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayoutReports, viewPagerReports,
                 true, true, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-
-                switch (position)
-                {
+                // Set the text for each tab based on the position
+                switch (position) {
                     case 0:
                         tab.setText("General");
                         break;

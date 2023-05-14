@@ -136,6 +136,7 @@ public class AddEditDeleteRefuelingActivity extends AppCompatActivity {
         refuelingNoteTI.setText(refuelingNote);
 
         // Register activity result launchers for the payment method and fuel type activities
+        // These will be used to open other activities for result
         paymentMethodActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -155,9 +156,11 @@ public class AddEditDeleteRefuelingActivity extends AppCompatActivity {
                 });
 
         // Attach openPaymentMethodActivity and openFuelTypeActivity to the corresponding UI elements
+        // Set onClick listeners to EditTexts to open respective activities
         refuelingPaymentMethodTI.setOnClickListener(v -> openPaymentMethodActivity());
         refuelingFuelTypeTI.setOnClickListener(v -> openFuelTypeActivity());
 
+        // Auto calculate price per litre, fuel litres, and total cost when focus is gained
         refuelingPricePerLitreTI.setOnFocusChangeListener((view, hasFocus) -> {
             if (hasFocus) {
                 autoCalculate();
@@ -177,84 +180,110 @@ public class AddEditDeleteRefuelingActivity extends AppCompatActivity {
         });
     }
 
+    // Method to open PaymentMethodActivity
     private void openPaymentMethodActivity() {
         Intent intent = new Intent(this, PaymentMethodActivity.class);
         intent.putExtra("selectMode", true);
         paymentMethodActivityResultLauncher.launch(intent);
     }
 
+    // Method to open FuelTypeActivity
     private void openFuelTypeActivity() {
         Intent intent = new Intent(this, FuelActivity.class);
         intent.putExtra("selectMode", true);
         fuelActivityResultLauncher.launch(intent);
     }
 
+    // Method to save refueling data
     void saveRefueling() {
+        // Getting the entered values
+
+        // Retrieve the refueling date from the user input
         String refuelingDate = Objects.requireNonNull(refuelingDatePickerTI.getText()).toString();
+        // Retrieve the refueling time from the user input
         String refuelingTime = Objects.requireNonNull(refuelingTimePickerTI.getText()).toString();
 
+        // Retrieve the refueling odometer reading from the user input
         String refuelingOdometerStr = Objects.requireNonNull(refuelingOdometerTI.getText()).toString();
+        // If the user has not entered a value for the refueling odometer reading, display an error message
         if (refuelingOdometerStr.isEmpty()) {
             refuelingOdometerTI.setError("Odometer is required");
             return;
         }
 
+        // Parse the string value of the refueling odometer reading to an integer
         int refuelingOdometer;
         try {
             refuelingOdometer = Integer.parseInt(refuelingOdometerStr);
         } catch (NumberFormatException e) {
+            // If the parsing fails, display an error message
             refuelingOdometerTI.setError("Invalid odometer value");
             return;
         }
 
+        // Retrieve the refueling fuel type from the user input
         String refuelingFuelType = Objects.requireNonNull(refuelingFuelTypeTI.getText()).toString();
 
+        // Retrieve the refueling price per litre from the user input
         String refuelingPricePerLitreStr = Objects.requireNonNull(refuelingPricePerLitreTI.getText()).toString();
+        // If the user has not entered a value for the refueling price per litre, display an error message
         if (refuelingPricePerLitreStr.isEmpty()) {
             refuelingPricePerLitreTI.setError("Price per litre is required");
             return;
         }
 
+        // Parse the string value of the refueling price per litre to a float
         float refuelingPricePerLitre;
         try {
             refuelingPricePerLitre = Float.parseFloat(refuelingPricePerLitreStr);
         } catch (NumberFormatException e) {
+            // If the parsing fails, display an error message
             refuelingPricePerLitreTI.setError("Invalid price per litre value");
             return;
         }
 
+        // Retrieve the refueling total cost from the user input
         String refuelingTotalCostStr = Objects.requireNonNull(refuelingTotalCostTI.getText()).toString();
+        // If the user has not entered a value for the refueling total cost, display an error message
         if (refuelingTotalCostStr.isEmpty()) {
             refuelingTotalCostTI.setError("Total cost is required");
             return;
         }
 
+        // Parse the string value of the refueling total cost to a float
         float refuelingTotalCost;
         try {
             refuelingTotalCost = Float.parseFloat(refuelingTotalCostStr);
         } catch (NumberFormatException e) {
+            // If the parsing fails, display an error message
             refuelingTotalCostTI.setError("Invalid total cost value");
             return;
         }
 
+        // Retrieve the refueling fuel litres from the user input
         String refuelingFuelLitresStr = Objects.requireNonNull(refuelingFuelLitresTI.getText()).toString();
+        // If the user has not entered a value for the refueling fuel litres, display an error message
         if (refuelingFuelLitresStr.isEmpty()) {
             refuelingFuelLitresTI.setError("Fuel litres is required");
             return;
         }
+        // Parse the string value of the refueling fuel litres to a float
         float refuelingFuelLitres;
         try {
             refuelingFuelLitres = Float.parseFloat(refuelingFuelLitresStr);
         } catch (NumberFormatException e) {
+            // If the parsing fails, display an error message
             refuelingFuelLitresTI.setError("Invalid fuel litres value");
             return;
         }
 
+        // Retrieve the refueling payment method from the user input
         String refuelingPaymentMethod = Objects.requireNonNull(refuelingPaymentMethodTI.getText()).toString();
+
+        // Retrieve the refueling note from the user input
         String refuelingNote = Objects.requireNonNull(refuelingNoteTI.getText()).toString();
 
-
-        // Create a Date object from the refuelingDate and refuelingTime strings
+        // // Parse the refueling date and time into a Timestamp object
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
         Date dateTime = null;
         try {
@@ -262,7 +291,6 @@ public class AddEditDeleteRefuelingActivity extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
         // Convert the Date object to a Timestamp object
         Timestamp timestamp = new Timestamp(new Date(dateTime.getTime()));
 
@@ -284,16 +312,18 @@ public class AddEditDeleteRefuelingActivity extends AppCompatActivity {
         saveRefuelingToFirebase(refuelingModel);
     }
 
+    // Method to save refueling object to Firebase
     void saveRefuelingToFirebase(RefuelingModel refuelingModel){
         DocumentReference documentReference;
         if(isEditMode){
-            //update the vehicle
+            // If in edit mode, update the existing vehicle document
             documentReference = Utility.getCollectionReferenceForRefueling().document(docId);
         }else{
-            //create new vehicle
+            // If not in edit mode, create a new vehicle document
             documentReference = Utility.getCollectionReferenceForRefueling().document();
         }
 
+        // Set the document to the refueling object
         documentReference.set(refuelingModel).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -309,25 +339,32 @@ public class AddEditDeleteRefuelingActivity extends AppCompatActivity {
 
     }
 
+    // Method to delete a refueling from Firebase
     void deleteRefuelingFromFirebase(){
-        DocumentReference documentReference;
-        documentReference = Utility.getCollectionReferenceForRefueling().document(docId);
+
+        // Get a reference to the document to be deleted
+        DocumentReference documentReference = Utility.getCollectionReferenceForRefueling().document(docId);
+
+        // Delete the document
         documentReference.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
-                    //note is deleted
+                    // If the deletion is successful, show a success message and finish the activity
                     Utility.showToast(AddEditDeleteRefuelingActivity.this,"Refueling deleted successfully");
                     finish();
                 }else{
+                    // If the deletion fails, show an error message
                     Utility.showToast(AddEditDeleteRefuelingActivity.this,"Failed while deleting refueling");
                 }
             }
         });
     }
 
+    // Override onCreateOptionsMenu to inflate custom menu and set visibility of save and delete buttons
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu and handle visibility of menu items based on edit mode
         getMenuInflater().inflate(R.menu.save_refueling_menu, menu);
 
         MenuItem saveItem = menu.findItem(R.id.saveRefuelingBtn);
@@ -336,21 +373,23 @@ public class AddEditDeleteRefuelingActivity extends AppCompatActivity {
         saveItem.setVisible(true);
         deleteItem.setVisible(false);
 
+        // Set visibility of save and delete buttons based on the mode
         if(isEditMode){
             getSupportActionBar().setTitle("Edit your Refueling");
             saveItem.setVisible(true);
             deleteItem.setVisible(true);
         }
-
         return true;
     }
 
+    // Override onOptionsItemSelected to handle button click events
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+        // Perform different actions based on the clicked item's ID
         switch (id) {
             case R.id.saveRefuelingBtn:
-                // Handle edit icon click
+                // Handle save button click
                 saveRefueling();
                 return true;
             case R.id.deleteRefuelingBtn:
@@ -358,6 +397,7 @@ public class AddEditDeleteRefuelingActivity extends AppCompatActivity {
                 deleteRefuelingFromFirebase();
                 return true;
             case android.R.id.home:
+                // Handle home (back) button click
                 finish();
                 return true;
             default:
@@ -365,6 +405,7 @@ public class AddEditDeleteRefuelingActivity extends AppCompatActivity {
         }
     }
 
+    // Method to show date picker dialog
     public void showDatePicker(View view) {
         final Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
@@ -384,6 +425,7 @@ public class AddEditDeleteRefuelingActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+    // Method to show time picker dialog
     public void showTimePicker(View view) {
         final Calendar calendar = Calendar.getInstance();
         // Create a new instance of TimePickerDialog and return it
@@ -404,8 +446,8 @@ public class AddEditDeleteRefuelingActivity extends AppCompatActivity {
         timePickerDialog.show();
     }
 
+    // Method to automatically calculate total cost or fuel litres
     private void autoCalculate() {
-
         String value1 = refuelingPricePerLitreTI.getText().toString();
         String value2 = refuelingFuelLitresTI.getText().toString();
         String value3 = refuelingTotalCostTI.getText().toString();
@@ -434,6 +476,7 @@ public class AddEditDeleteRefuelingActivity extends AppCompatActivity {
         }
     }
 
+    // Method to round a float number to three decimals
     public static float roundToThreeDecimals(float number) {
         return (float) (Math.round(number * 1000) / 1000.0);
     }

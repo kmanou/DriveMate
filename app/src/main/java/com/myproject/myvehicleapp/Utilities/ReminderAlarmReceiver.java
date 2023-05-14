@@ -69,6 +69,10 @@ public class ReminderAlarmReceiver extends BroadcastReceiver {
         Log.d(TAG, "Reminder notification sent: " + reminderTitle);
     }
 
+    /**
+     * Creates the notification channel for reminder notifications on Android Oreo and above.
+     * @param context The application context.
+     */
     private void createNotificationChannel(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String channelId = "reminder_channel";

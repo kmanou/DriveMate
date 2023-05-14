@@ -16,44 +16,48 @@ import com.myproject.myvehicleapp.Utilities.Tools;
 
 public class ContactActivity extends AppCompatActivity {
 
-    // define objects for edit text and button
+    // Define objects for EditText and Button
     Button sendMailButton;
-    TextInputEditText email,subject,message;
+    TextInputEditText email, subject, message;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
 
+        // Initialize the toolbar
         initToolbar();
-        // Getting instance of edittext and button
+
+        // Get references to the EditText and Button views
         email = findViewById(R.id.contactEmail);
         subject = findViewById(R.id.contactSubject);
         message = findViewById(R.id.contactMessage);
         sendMailButton = findViewById(R.id.sendEmailBtn);
 
-        // attach setOnClickListener to button with Intent object define in it
+        // Attach a click listener to the sendMailButton
         sendMailButton.setOnClickListener(view -> {
+            // Retrieve the entered email, subject, and message values
             String emailSend = email.getText().toString();
             String emailSubject = subject.getText().toString();
             String emailBody = message.getText().toString();
 
-            // define Intent object with action attribute as ACTION_SEND
+            // Create an Intent object with the action attribute set to ACTION_SEND
             Intent intent = new Intent(Intent.ACTION_SEND);
 
-            // add three fields to intent using putExtra function
+            // Add the email, subject, and message fields to the intent using putExtra function
             intent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailSend});
             intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
             intent.putExtra(Intent.EXTRA_TEXT, emailBody);
 
-            // set type of intent
+            // Set the type of the intent to "message/rfc822" for email
             intent.setType("message/rfc822");
 
-            // startActivity with intent with chooser as Email client using createChooser function
-            startActivity(Intent.createChooser(intent, "Choose an Email client :"));
+            // Start the activity with the intent and display a chooser dialog to select an email client
+            startActivity(Intent.createChooser(intent, "Choose an Email client:"));
         });
     }
 
+    // Initialize the toolbar and set its properties
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_contact);
         setSupportActionBar(toolbar);
@@ -64,16 +68,19 @@ public class ContactActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu resource file
         getMenuInflater().inflate(R.menu.menu_setting, menu);
         return true;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle menu item clicks
         if (item.getItemId() == android.R.id.home) {
+            // If the home button is clicked, finish the activity and return to the previous screen
             finish();
         } else {
+            // If any other menu item is clicked, show a toast message with the title of the clicked item
             Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);

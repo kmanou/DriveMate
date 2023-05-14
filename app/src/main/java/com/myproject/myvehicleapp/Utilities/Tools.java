@@ -17,6 +17,12 @@ import com.myproject.myvehicleapp.R;
 
 public class Tools {
 
+    /**
+     * Sets the system bar color of the activity.
+     * This method is used to change the color of the status bar (navigation bar) on devices running Android Lollipop (API 21) and above.
+     *
+     * @param act The activity for which the system bar color should be set.
+     */
     public static void setSystemBarColor(Activity act) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = act.getWindow();
@@ -26,6 +32,13 @@ public class Tools {
         }
     }
 
+    /**
+     * Sets the system bar color of the activity with a custom color.
+     * This method is used to change the color of the status bar (navigation bar) on devices running Android Lollipop (API 21) and above.
+     *
+     * @param act   The activity for which the system bar color should be set.
+     * @param color The color resource ID to be used for the system bar color.
+     */
     public static void setSystemBarColor(Activity act, @ColorRes int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = act.getWindow();
@@ -34,5 +47,5 @@ public class Tools {
             window.setStatusBarColor(act.getResources().getColor(color));
         }
     }
-
 }
+

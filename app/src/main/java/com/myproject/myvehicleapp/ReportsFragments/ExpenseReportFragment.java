@@ -48,19 +48,19 @@ public class ExpenseReportFragment extends Fragment {
     private TextView mReportExpenseTitle;
 
     private BarChart mExpenseCostPerMonthChart;
-    public static ExpenseReportFragment newInstance(){
+
+    public static ExpenseReportFragment newInstance() {
         return new ExpenseReportFragment();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Define the design file
-        View view = inflater.inflate(R.layout.fragment_expense_report,container,false);
+        // Inflate the layout for the fragment
+        View view = inflater.inflate(R.layout.fragment_expense_report, container, false);
 
-        // Initialize the TextView
+        // Initialize the TextViews and BarChart
         mReportExpenseTitle = view.findViewById(R.id.reportExpenseTitle);
-
         mTotalExpenseCostTextView = view.findViewById(R.id.totalExpenseCostTextView);
         mByKmExpenseCostTextView = view.findViewById(R.id.byKmExpenseCostTextView);
         mByDayExpenseCostTextView = view.findViewById(R.id.byDayExpenseCostTextView);
@@ -70,7 +70,7 @@ public class ExpenseReportFragment extends Fragment {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
 
         // Check if the user is logged in and fetch the total cost
@@ -85,59 +85,58 @@ public class ExpenseReportFragment extends Fragment {
         }
     }
 
+    // Fetch the total cost and update the UI
     private void fetchTotalCost() {
         CollectionReference myExpenseCollectionReference = Utility.getCollectionReferenceForExpense();
 
-        myExpenseCollectionReference
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        double totalCost = 0;
-                        double maxOdometer = 0;
-                        long minTimestamp = Long.MAX_VALUE;
-                        long maxTimestamp = Long.MIN_VALUE;
+        myExpenseCollectionReference.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                double totalCost = 0;
+                double maxOdometer = 0;
+                long minTimestamp = Long.MAX_VALUE;
+                long maxTimestamp = Long.MIN_VALUE;
+                int numberOfEntries = 0;
 
-                        int numberOfEntries = 0;
+                // Iterate through each document in the expense collection
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Double cost = document.getDouble("expenseTotalCost");
+                    Double odometer = document.getDouble("expenseOdometer");
+                    Timestamp expenseTimestamp = document.getTimestamp("expenseTimeStamp");
 
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Double cost = document.getDouble("expenseTotalCost");
-                            Double odometer = document.getDouble("expenseOdometer");
-                            Timestamp expenseTimestamp = document.getTimestamp("expenseTimeStamp");
-
-                            if (cost != null) {
-                                totalCost += cost;
-                            }
-                            if (odometer != null) {
-                                maxOdometer = Math.max(maxOdometer, odometer);
-                            }
-                            if (expenseTimestamp != null) {
-                                long millis = expenseTimestamp.toDate().getTime();
-                                minTimestamp = Math.min(minTimestamp, millis);
-                                maxTimestamp = Math.max(maxTimestamp, millis);
-                            }
-
-                            numberOfEntries++;
-                        }
-
-                        // Calculate and display the values
-                        updateReportExpenseTitle(numberOfEntries, minTimestamp, maxTimestamp);
-                        displayTotalExpenseCost(totalCost);
-                        displayAvgCostPerKm(totalCost, maxOdometer);
-                        displayAvgCostPerDay(totalCost, minTimestamp, maxTimestamp);
-
-                        // Calculate and display the cost per month chart
-                        Map<Integer, Float> costPerMonth = calculateCostPerMonth(task.getResult().getDocuments());
-                        setupCostPerMonthChart(costPerMonth);
-
-                    } else {
-                        mTotalExpenseCostTextView.setText("Error fetching data.");
-                        mByKmExpenseCostTextView.setText("Error fetching data.");
-                        mByDayExpenseCostTextView.setText("Error fetching data.");
+                    if (cost != null) {
+                        totalCost += cost;
                     }
-                });
+                    if (odometer != null) {
+                        maxOdometer = Math.max(maxOdometer, odometer);
+                    }
+                    if (expenseTimestamp != null) {
+                        long millis = expenseTimestamp.toDate().getTime();
+                        minTimestamp = Math.min(minTimestamp, millis);
+                        maxTimestamp = Math.max(maxTimestamp, millis);
+                    }
+
+                    numberOfEntries++;
+                }
+
+                // Calculate and display the values
+                updateReportExpenseTitle(numberOfEntries, minTimestamp, maxTimestamp);
+                displayTotalExpenseCost(totalCost);
+                displayAvgCostPerKm(totalCost, maxOdometer);
+                displayAvgCostPerDay(totalCost, minTimestamp, maxTimestamp);
+
+                // Calculate and display the cost per month chart
+                Map<Integer, Float> costPerMonth = calculateCostPerMonth(task.getResult().getDocuments());
+                setupCostPerMonthChart(costPerMonth);
+            } else {
+                // Display an error message if fetching data fails
+                mTotalExpenseCostTextView.setText("Error fetching data.");
+                mByKmExpenseCostTextView.setText("Error fetching data.");
+                mByDayExpenseCostTextView.setText("Error fetching data.");
+            }
+        });
     }
 
-    // Update the report expense title with number of entries and date range
+    // Update the report expense title with the number of entries and date range
     private void updateReportExpenseTitle(int numberOfEntries, long minTimestamp, long maxTimestamp) {
         DateFormat dateFormat = SimpleDateFormat.getDateInstance();
         String startDate = dateFormat.format(new Date(minTimestamp));
@@ -172,6 +171,7 @@ public class ExpenseReportFragment extends Fragment {
         }
     }
 
+    // Calculate the cost per month for the expense entries
     private Map<Integer, Float> calculateCostPerMonth(List<DocumentSnapshot> documents) {
         Map<Integer, Float> costPerMonth = new HashMap<>();
 
@@ -192,6 +192,7 @@ public class ExpenseReportFragment extends Fragment {
         return costPerMonth;
     }
 
+    // Get the label for a given month key (yyyyMM format)
     private String getMonthLabel(int monthKey) {
         int year = monthKey / 100;
         int month = monthKey % 100;
@@ -204,6 +205,7 @@ public class ExpenseReportFragment extends Fragment {
         return dateFormat.format(calendar.getTime());
     }
 
+    // Set up the cost per month bar chart with the provided cost per month data
     private void setupCostPerMonthChart(Map<Integer, Float> costPerMonth) {
         List<BarEntry> entries = new ArrayList<>();
         List<String> labels = new ArrayList<>();
@@ -219,10 +221,9 @@ public class ExpenseReportFragment extends Fragment {
             index++;
         }
 
-        BarDataSet dataSet = new BarDataSet(entries, "Cost per Month");
+        BarDataSet dataSet= new BarDataSet(entries, "Cost per Month");
         dataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
         dataSet.setValueTextSize(10f);
-
         BarData barData = new BarData(dataSet);
         mExpenseCostPerMonthChart.setData(barData);
         mExpenseCostPerMonthChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
@@ -234,6 +235,5 @@ public class ExpenseReportFragment extends Fragment {
         mExpenseCostPerMonthChart.setFitBars(true);
         mExpenseCostPerMonthChart.invalidate();
     }
-
-
 }
+

@@ -4,17 +4,19 @@ import com.google.firebase.Timestamp;
 
 public class HistoryModel {
 
-    private String id;
-    private String recyclerTitle;
-    private String collectionType;
-    private Timestamp collectionTimestamp;
-    private RefuelingModel refuelingModel;
-    private ExpenseModel expenseModel;
-    private ServiceModel serviceModel;
-
+    private String id; // ID of the history model
+    private String recyclerTitle; // Title for the RecyclerView item
+    private String collectionType; // Type of the collection (e.g., refueling, expense, service)
+    private Timestamp collectionTimestamp; // Timestamp of the collection
+    private RefuelingModel refuelingModel; // Refueling model associated with the history item
+    private ExpenseModel expenseModel; // Expense model associated with the history item
+    private ServiceModel serviceModel; // Service model associated with the history item
 
     public HistoryModel() {
+        // Default constructor required for Firebase
     }
+
+    // Getters and setters for the HistoryModel properties
 
     public String getId() {
         return id;
@@ -72,3 +74,4 @@ public class HistoryModel {
         this.serviceModel = serviceModel;
     }
 }
+

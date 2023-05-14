@@ -20,16 +20,21 @@ import com.myproject.myvehicleapp.Models.RefuelingModel;
 import com.myproject.myvehicleapp.R;
 import com.myproject.myvehicleapp.Utilities.Utility;
 
+// This class adapts a list of refueling data for display in a RecyclerView
 public class RefuelingAdapter extends FirestoreRecyclerAdapter<RefuelingModel, RefuelingAdapter.RefuelingViewHolder> {
+    // The context is needed for various Android operations
     Context context;
 
+    // Constructor for the adapter; initializes it with data and context
     public RefuelingAdapter(@NonNull FirestoreRecyclerOptions<RefuelingModel> options, Context context) {
         super(options);
         this.context = context;
     }
 
+    // This method is called to bind each item in the RecyclerView to its data
     @Override
     protected void onBindViewHolder(@NonNull RefuelingViewHolder holder, int position, @NonNull RefuelingModel refuelingModel) {
+        // Setting the data for each TextView in the ViewHolder
         holder.recyclerTypeTitle.setText(refuelingModel.recyclerTitle);
         holder.refuelingDateTime.setText(Utility.timestampToString(refuelingModel.refuelingTimestamp));
         holder.refuelingTotalLitres.setText(String.valueOf(refuelingModel.refuelingFuelLitres));
@@ -38,6 +43,7 @@ public class RefuelingAdapter extends FirestoreRecyclerAdapter<RefuelingModel, R
         holder.refuelingOdometer.setText(String.valueOf(refuelingModel.refuelingOdometer));
         holder.refuelingTotalPrice.setText(String.valueOf(refuelingModel.refuelingTotalCost));
 
+        // Setting up an OnClickListener for the edit button to start AddEditDeleteRefuelingActivity
         holder.editBtn.setOnClickListener((v)->{
             Intent intent = new Intent(context, AddEditDeleteRefuelingActivity.class);
 
@@ -56,6 +62,7 @@ public class RefuelingAdapter extends FirestoreRecyclerAdapter<RefuelingModel, R
         });
     }
 
+    // This method is called to create a new ViewHolder
     @NonNull
     @Override
     public RefuelingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -63,18 +70,20 @@ public class RefuelingAdapter extends FirestoreRecyclerAdapter<RefuelingModel, R
         return new RefuelingViewHolder(view);
     }
 
+    // ViewHolder class represents each item in the RecyclerView
     class RefuelingViewHolder extends RecyclerView.ViewHolder{
+
+        // Views inside each item
         TextView recyclerTypeTitle;
         TextView refuelingDateTime;
         TextView refuelingTotalLitres;
         TextView refuelingTypeOfFuel;
         TextView refuelingCostPerLitre;
-        //TextView refuelingFuelConsumption;
         TextView refuelingOdometer;
         TextView refuelingTotalPrice;
         ImageView editBtn;
 
-
+        // Method to toggle visibility of a view
         public void toggleVisibility(View view) {
             if (view.getVisibility() == View.VISIBLE) {
                 view.setVisibility(View.GONE);
@@ -83,6 +92,7 @@ public class RefuelingAdapter extends FirestoreRecyclerAdapter<RefuelingModel, R
             }
         }
 
+        // ViewHolder constructor initializes the views inside each item
         public RefuelingViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -91,18 +101,17 @@ public class RefuelingAdapter extends FirestoreRecyclerAdapter<RefuelingModel, R
             revealRefuelingCard = itemView.findViewById(R.id.revealRefueling);
             linearLayout.setVisibility(View.GONE);
 
+            // Initialization of views
             editBtn = itemView.findViewById(R.id.refueling_edit_btn);
-
             recyclerTypeTitle = itemView.findViewById(R.id.refuelingRecyclerTypeTitleTVItem);
             refuelingDateTime = itemView.findViewById(R.id.refuelingDateTVItem);
-
             refuelingTotalLitres = itemView.findViewById(R.id.refuelingTotalLitresTVItem);
             refuelingTypeOfFuel = itemView.findViewById(R.id.refuelingTypeOfFuelTVItem);
             refuelingCostPerLitre = itemView.findViewById(R.id.refuelingCostPerLitreTVItem);
-            //refuelingFuelConsumption = itemView.findViewById(R.id.refuelingFuelConsumptionTVItem);
             refuelingOdometer = itemView.findViewById(R.id.refuelingOdometerCounterTVItem);
             refuelingTotalPrice = itemView.findViewById(R.id.refuelingTotalPriceTVItem);
 
+            // Toggling visibility of linearLayout when revealRefuelingCard is clicked
             revealRefuelingCard.setOnClickListener(view -> {
                 toggleVisibility(linearLayout);
                 notifyDataSetChanged();
@@ -110,4 +119,3 @@ public class RefuelingAdapter extends FirestoreRecyclerAdapter<RefuelingModel, R
         }
     }
 }
-

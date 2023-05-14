@@ -40,6 +40,7 @@ public class ExpenseActivity extends AppCompatActivity {
         addExpenseBtn = findViewById(R.id.add_expense_btn);
         recyclerExpenseView = findViewById(R.id.expense_recycler_view);
 
+        // Set a click listener for the "Add Expense" button to open the AddEditDeleteExpenseActivity
         addExpenseBtn.setOnClickListener((v) -> startActivity(new Intent(ExpenseActivity.this, AddEditDeleteExpenseActivity.class)));
 
         // Check if the user is authenticated
@@ -54,10 +55,14 @@ public class ExpenseActivity extends AppCompatActivity {
         }
     }
 
+    // Method to set up the recycler view with expense data
     void setupRecyclerView() {
+        // Construct a query to retrieve expense data from the Firestore database
         Query query = Utility.getCollectionReferenceForExpense().limit(10).orderBy("expenseTimeStamp", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<ExpenseModel> options = new FirestoreRecyclerOptions.Builder<ExpenseModel>()
                 .setQuery(query, ExpenseModel.class).build();
+
+        // Set the layout manager and adapter for the recycler view
         recyclerExpenseView.setLayoutManager(new LinearLayoutManager(this));
         expenseAdapter = new ExpenseAdapter(options, this);
         recyclerExpenseView.setAdapter(expenseAdapter);
@@ -66,18 +71,21 @@ public class ExpenseActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        // Start listening for changes in the Firestore data and update the adapter accordingly
         expenseAdapter.startListening();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        // Stop listening for changes in the Firestore data
         expenseAdapter.stopListening();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        // Notify the adapter to update the view in case of any changes
         expenseAdapter.notifyDataSetChanged();
     }
 }

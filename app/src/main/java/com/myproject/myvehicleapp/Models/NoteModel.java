@@ -3,13 +3,15 @@ package com.myproject.myvehicleapp.Models;
 import com.google.firebase.Timestamp;
 
 public class NoteModel {
-    public String title;
-    public String content;
-    public Timestamp timestamp;
+    public String title; // The title of the note
+    public String content; // The content of the note
+    public Timestamp timestamp; // The timestamp indicating when the note was created or last modified
 
+    // Default constructor
     public NoteModel() {
     }
 
+    // Getters and setters for the NoteModel properties
     public String getTitle() {
         return title;
     }

@@ -31,16 +31,31 @@ android {
 
 dependencies {
 
+    // AndroidX AppCompat library to support different Android OS versions with the same codebase
     implementation 'androidx.appcompat:appcompat:1.6.1'
+
+    // Google's Material Design components, providing UI elements that follow the Material Design guidelines
     implementation 'com.google.android.material:material:1.9.0'
+
+    // ConstraintLayout allows you to create large and complex layouts with a flat view hierarchy
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    // Firebase dependencies to use Firebase Authentication and Firestore database services
     implementation 'com.google.firebase:firebase-auth:22.0.0'
     implementation 'com.google.firebase:firebase-firestore:24.6.0'
+
+    // FirebaseUI for Firestore provides an easy way to bind data from Firestore to your app's UI
     implementation 'com.firebaseui:firebase-ui-firestore:8.0.2'
+
+    // JUnit is a testing framework for Java, necessary for writing unit tests
     testImplementation 'junit:junit:4.13.2'
+
+    // AndroidX Test dependencies for running unit tests and UI tests on Android
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
+    // MPAndroidChart is a powerful and easy-to-use chart library for Android
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
 
 }

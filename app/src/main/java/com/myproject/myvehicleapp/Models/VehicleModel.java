@@ -1,23 +1,26 @@
 package com.myproject.myvehicleapp.Models;
 
+// This class serves as a data model for a Vehicle object
 public class VehicleModel {
 
-    public String vehicle;
-    public String vehicleName;
-    public String manufacturer;
-    public String model;
-    public String licencePlate;
-    public String year;
-    public String fuelType;
-    public String fuelCapacity;
-    public String chassisNumber;
-    public String identificationVin;
-    public String vehicleNotes;
-    //public String docId;
 
+    public String vehicle;// The vehicle type (e.g., car, motorcycle)
+    public String vehicleName;// The name of the vehicle
+    public String manufacturer;// The manufacturer of the vehicle
+    public String model; // The model of the vehicle
+    public String licencePlate;// The license plate of the vehicle
+    public String year;// The manufacturing year of the vehicle
+    public String fuelType;// The fuel type of the vehicle (e.g., gasoline, diesel, electric)
+    public String fuelCapacity; // The fuel capacity of the vehicle
+    public String chassisNumber;// The chassis number of the vehicle
+    public String identificationVin;// The Vehicle Identification Number (VIN) of the vehicle
+    public String vehicleNotes;// Any additional notes related to the vehicle
+
+    // Default constructor
     public VehicleModel() {
-
     }
+
+    // Getter and Setter methods for each field will go here
 
     public String getVehicle() {
         return vehicle;

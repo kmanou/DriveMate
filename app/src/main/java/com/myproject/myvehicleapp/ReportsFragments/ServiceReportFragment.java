@@ -48,7 +48,8 @@ public class ServiceReportFragment extends Fragment {
     private TextView mReportServiceTitle;
 
     private BarChart mServiceCostPerMonthChart;
-    public static ServiceReportFragment newInstance(){
+
+    public static ServiceReportFragment newInstance() {
         return new ServiceReportFragment();
     }
 
@@ -56,11 +57,10 @@ public class ServiceReportFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Define the design file
-        View view = inflater.inflate(R.layout.fragment_service_report,container,false);
+        View view = inflater.inflate(R.layout.fragment_service_report, container, false);
 
         // Initialize the TextView
         mReportServiceTitle = view.findViewById(R.id.reportServiceTitle);
-
         mTotalServiceCostTextView = view.findViewById(R.id.totalServiceCostTextView);
         mByKmServiceCostTextView = view.findViewById(R.id.byKmServiceCostTextView);
         mByDayServiceCostTextView = view.findViewById(R.id.byDayServiceCostTextView);
@@ -70,7 +70,7 @@ public class ServiceReportFragment extends Fragment {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
 
         // Check if the user is logged in and fetch the total cost
@@ -86,6 +86,7 @@ public class ServiceReportFragment extends Fragment {
     }
 
     private void fetchTotalCost() {
+        // Get the reference to the collection for service
         CollectionReference myServiceCollectionReference = Utility.getCollectionReferenceForService();
 
         myServiceCollectionReference
@@ -100,10 +101,12 @@ public class ServiceReportFragment extends Fragment {
                         int numberOfEntries = 0;
 
                         for (QueryDocumentSnapshot document : task.getResult()) {
+                            // Fetch the service cost, odometer, and timestamp from each document
                             Double cost = document.getDouble("serviceTotalCost");
                             Double odometer = document.getDouble("serviceOdometer");
                             Timestamp serviceTimestamp = document.getTimestamp("serviceTimeStamp");
 
+                            // Calculate the total cost, max odometer, min timestamp, and max timestamp
                             if (cost != null) {
                                 totalCost += cost;
                             }
@@ -130,6 +133,7 @@ public class ServiceReportFragment extends Fragment {
                         setupCostPerMonthChart(costPerMonth);
 
                     } else {
+                        // Handle the case of an error while fetching data
                         mTotalServiceCostTextView.setText("Error fetching data.");
                         mByKmServiceCostTextView.setText("Error fetching data.");
                         mByDayServiceCostTextView.setText("Error fetching data.");
@@ -172,6 +176,7 @@ public class ServiceReportFragment extends Fragment {
         }
     }
 
+    // Calculate the cost per month based on the service documents
     private Map<Integer, Float> calculateCostPerMonth(List<DocumentSnapshot> documents) {
         Map<Integer, Float> costPerMonth = new HashMap<>();
 
@@ -192,6 +197,7 @@ public class ServiceReportFragment extends Fragment {
         return costPerMonth;
     }
 
+    // Get the label for a specific month key
     private String getMonthLabel(int monthKey) {
         int year = monthKey / 100;
         int month = monthKey % 100;
@@ -204,6 +210,7 @@ public class ServiceReportFragment extends Fragment {
         return dateFormat.format(calendar.getTime());
     }
 
+    // Set up the cost per month chart with the provided cost per month data
     private void setupCostPerMonthChart(Map<Integer, Float> costPerMonth) {
         List<BarEntry> entries = new ArrayList<>();
         List<String> labels = new ArrayList<>();
@@ -215,7 +222,7 @@ public class ServiceReportFragment extends Fragment {
         int index = 0;
         for (Map.Entry<Integer, Float> entry : sortedEntries) {
             entries.add(new BarEntry(index, entry.getValue()));
-            labels.add(getMonthLabel(entry.getKey()));
+                    labels.add(getMonthLabel(entry.getKey()));
             index++;
         }
 
@@ -234,6 +241,4 @@ public class ServiceReportFragment extends Fragment {
         mServiceCostPerMonthChart.setFitBars(true);
         mServiceCostPerMonthChart.invalidate();
     }
-
-
 }

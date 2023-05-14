@@ -2,15 +2,19 @@ package com.myproject.myvehicleapp.Models;
 
 import com.google.firebase.Timestamp;
 
+// This class serves as a data model for a Reminder object
 public class ReminderModel {
-    public String reminderTitle;
-    public String reminderDescription;
-    public Timestamp reminderTimestamp;
-    private boolean alarmEnabled;
 
+    public String reminderTitle;// The title of the reminder
+    public String reminderDescription;// The description of the reminder
+    public Timestamp reminderTimestamp;// The timestamp when the reminder is set to trigger
+    private boolean alarmEnabled;// Boolean indicating if the alarm for the reminder is enabled or not
+
+    // Default constructor
     public ReminderModel() {
     }
 
+    // Getter method for the reminderTitle field
     public String getReminderTitle() {
         return reminderTitle;
     }

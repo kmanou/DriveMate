@@ -36,6 +36,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
+// This class handles the activity for adding, editing, and deleting an expense in the app
 public class AddEditDeleteExpenseActivity extends AppCompatActivity {
 
     // Define all the UI elements
@@ -69,7 +70,6 @@ public class AddEditDeleteExpenseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_edit_delete_expense);
 
         // Find all the UI elements by their IDs
-
         toolbarExpense = findViewById(R.id.toolbar_expense);
         setSupportActionBar(toolbarExpense);
         getSupportActionBar().setTitle("Add Expense");
@@ -143,18 +143,21 @@ public class AddEditDeleteExpenseActivity extends AppCompatActivity {
         expenseTypeOfExpenseTI.setOnClickListener(v -> openExpenseTypeActivity());
     }
 
+    // Method to open the PaymentMethodActivity
     private void openPaymentMethodActivity() {
         Intent intent = new Intent(this, PaymentMethodActivity.class);
         intent.putExtra("selectMode", true);
         paymentMethodActivityResultLauncher.launch(intent);
     }
 
+    // Method to open the TypeOfExpenseActivity
     private void openExpenseTypeActivity() {
         Intent intent = new Intent(this, TypeOfExpenseActivity.class);
         intent.putExtra("selectMode", true);
         expenseActivityResultLauncher.launch(intent);
     }
 
+    // Method to validate and save expense
     void saveExpense() {
         String expenseDate = Objects.requireNonNull(expenseDatePickerTI.getText()).toString();
         String expenseTime = Objects.requireNonNull(expenseTimePickerTI.getText()).toString();
@@ -221,6 +224,8 @@ public class AddEditDeleteExpenseActivity extends AppCompatActivity {
         saveExpenseToFirebase(expenseModel);
     }
 
+
+    // Method to save expense data to Firebase
     void saveExpenseToFirebase(ExpenseModel expenseModel) {
         DocumentReference documentReference;
         if (isEditMode) {
@@ -245,6 +250,7 @@ public class AddEditDeleteExpenseActivity extends AppCompatActivity {
         });
     }
 
+    // Method to delete expense data from Firebase
     void deleteExpenseFromFirebase() {
         DocumentReference documentReference;
         documentReference = Utility.getCollectionReferenceForExpense().document(docId);
@@ -262,6 +268,7 @@ public class AddEditDeleteExpenseActivity extends AppCompatActivity {
         });
     }
 
+    // Method to handle menu creation
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.save_expense_menu, menu);
@@ -281,6 +288,7 @@ public class AddEditDeleteExpenseActivity extends AppCompatActivity {
         return true;
     }
 
+    // Method to handle menu item selections
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
@@ -301,6 +309,7 @@ public class AddEditDeleteExpenseActivity extends AppCompatActivity {
         }
     }
 
+    // Method to show date picker
     public void showDatePicker(View view) {
         final Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
@@ -320,6 +329,7 @@ public class AddEditDeleteExpenseActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+    // Method to show time picker
     public void showTimePicker(View view) {
         final Calendar calendar = Calendar.getInstance();
         // Create a new instance of TimePickerDialog and return it

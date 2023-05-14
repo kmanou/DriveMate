@@ -46,6 +46,7 @@ public class TypeOfServiceActivity extends AppCompatActivity {
         addTypeOfServiceBtn = findViewById(R.id.add_type_of_service_btn);
         recyclerTypeOfServiceView = findViewById(R.id.recycler_type_of_service_view);
 
+        // Handle click event for the "Add Type of Service" button
         addTypeOfServiceBtn.setOnClickListener((v) -> startActivity(new Intent(TypeOfServiceActivity.this, AddEditDeleteTypeOfServiceActivity.class)));
 
         // Check if the user is authenticated
@@ -59,31 +60,37 @@ public class TypeOfServiceActivity extends AppCompatActivity {
             finish();
         }
 
+        // Get the select mode flag from the intent
         selectMode = getIntent().getBooleanExtra("selectMode", false);
     }
 
     void setupRecyclerView() {
+        // Query the collection and order the results by "typeOfService" in descending order
         Query query = Utility.getCollectionReferenceForTypeOfService().orderBy("typeOfService", Query.Direction.DESCENDING);
+
+        // Configure the options for the FirestoreRecyclerAdapter
         FirestoreRecyclerOptions<TypeOfServiceModel> options = new FirestoreRecyclerOptions.Builder<TypeOfServiceModel>()
                 .setQuery(query, TypeOfServiceModel.class).build();
+
         recyclerTypeOfServiceView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Create the adapter for the recycler view
         typeOfServiceAdapter = new TypeOfServiceAdapter(options, this, (TypeOfServiceModel, docId) -> {
             if (selectMode) {
+                // If in select mode, return the selected type of service to the calling activity
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("selectedTypeOfService", TypeOfServiceModel.typeOfService);
                 setResult(RESULT_OK, resultIntent);
                 finish();
             } else {
                 // Handle service type item click here
+                // For example, you can start a new activity or show a toast
                 Toast.makeText(TypeOfServiceActivity.this,
                         "Clicked on: " + TypeOfServiceModel.typeOfService, Toast.LENGTH_SHORT).show();
             }
         }, selectMode);
 
         recyclerTypeOfServiceView.setAdapter(typeOfServiceAdapter);
-
-
     }
 
     @Override
@@ -99,18 +106,21 @@ public class TypeOfServiceActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        // Start listening for changes in the FirestoreRecyclerAdapter
         typeOfServiceAdapter.startListening();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        // Stop listening for changes in the FirestoreRecyclerAdapter
         typeOfServiceAdapter.stopListening();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        // Notify the adapter that the data has changed (if necessary)
         typeOfServiceAdapter.notifyDataSetChanged();
     }
 }

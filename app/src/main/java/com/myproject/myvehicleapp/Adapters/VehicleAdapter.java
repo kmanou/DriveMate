@@ -17,33 +17,35 @@ import com.myproject.myvehicleapp.AddActivities.AddEditDeleteVehicleActivity;
 import com.myproject.myvehicleapp.Models.VehicleModel;
 import com.myproject.myvehicleapp.R;
 
+// Custom adapter class for FirestoreRecyclerAdapter with VehicleModel
 public class VehicleAdapter extends FirestoreRecyclerAdapter<VehicleModel, VehicleAdapter.VehicleViewHolder> {
     Context context;
 
+    // Constructor for VehicleAdapter
     public VehicleAdapter(@NonNull FirestoreRecyclerOptions<VehicleModel> options, Context context) {
         super(options);
         this.context = context;
     }
 
+    // Binds the data to the viewholder
     @Override
     protected void onBindViewHolder(@NonNull VehicleViewHolder holder, int position, @NonNull VehicleModel vehicleModel) {
 
-        //holder.vehicleTI.setText(vehicleModel.vehicle);
+        // Set the data to the TextViews
         holder.vehicle.setText(vehicleModel.vehicleName);
         holder.manufacturer.setText(vehicleModel.manufacturer);
         holder.model.setText(vehicleModel.model);
         holder.licencePlate.setText(vehicleModel.licencePlate);
         holder.year.setText(vehicleModel.year);
-        //holder.fuelType.setText(vehicleModel.fuelType);
         holder.fuelCapacity.setText(vehicleModel.fuelCapacity);
         holder.chassisNumber.setText(vehicleModel.chassisNumber);
         holder.identificationVin.setText(vehicleModel.identificationVin);
-        //holder.vehicleNotes.setText(vehicleModel.vehicleNotes);
 
-
+        // Setting up OnClickListener for the view
         holder.itemView.setOnClickListener((v)->{
             Intent intent = new Intent(context, AddEditDeleteVehicleActivity.class);
 
+            // Putting extra data to the intent
             intent.putExtra("vehicle",vehicleModel.vehicle);
             intent.putExtra("vehicleName",vehicleModel.vehicleName);
             intent.putExtra("manufacturer",vehicleModel.manufacturer);
@@ -56,13 +58,14 @@ public class VehicleAdapter extends FirestoreRecyclerAdapter<VehicleModel, Vehic
             intent.putExtra("identificationVin",vehicleModel.identificationVin);
             intent.putExtra("vehicleNote",vehicleModel.vehicleNotes);
 
+            // Getting the document id from the snapshot
             String docId = this.getSnapshots().getSnapshot(position).getId();
             intent.putExtra("docId",docId);
             context.startActivity(intent);
         });
     }
 
-
+    // Method to create new ViewHolder
     @NonNull
     @Override
     public VehicleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -70,6 +73,7 @@ public class VehicleAdapter extends FirestoreRecyclerAdapter<VehicleModel, Vehic
         return new VehicleViewHolder(view);
     }
 
+    // ViewHolder class for Vehicle
     class VehicleViewHolder extends RecyclerView.ViewHolder{
         TextView vehicle;
         TextView manufacturer;
@@ -80,18 +84,7 @@ public class VehicleAdapter extends FirestoreRecyclerAdapter<VehicleModel, Vehic
         TextView chassisNumber;
         TextView identificationVin;
 
-/*      TextInputEditText vehicleTI;
-        TextInputEditText vehicleNameTI;
-        TextInputEditText manufacturerTI;
-        TextInputEditText modelTI;
-        TextInputEditText licencePlateTI;
-        TextInputEditText yearTI;
-        TextInputEditText fuelTypeTI;
-        TextInputEditText fuelCapacityTI;
-        TextInputEditText chassisNumberTI;
-        TextInputEditText identificationVinTI;
-        TextInputEditText vehicleNotesTI;
-*/
+        // Method for toggling visibility
         public void toggleVisibility(View view) {
             if (view.getVisibility() == View.VISIBLE) {
                 view.setVisibility(View.GONE);
@@ -100,9 +93,11 @@ public class VehicleAdapter extends FirestoreRecyclerAdapter<VehicleModel, Vehic
             }
         }
 
+        // Constructor for the ViewHolder
         public VehicleViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            // Initialize the view elements
             LinearLayout linearLayout, revealVehicleCard;
             linearLayout = itemView.findViewById(R.id.expanded_vehicle_menu);
             revealVehicleCard = itemView.findViewById(R.id.revealVehicle);
@@ -114,19 +109,10 @@ public class VehicleAdapter extends FirestoreRecyclerAdapter<VehicleModel, Vehic
             year = itemView.findViewById(R.id.yearTV);
             chassisNumber = itemView.findViewById(R.id.chassisNumberTV);
             identificationVin = itemView.findViewById(R.id.identificationVinTV);
-
-            //vehicleTI = itemView.findViewById(R.id.vehicleTI);
             vehicle = itemView.findViewById(R.id.vehicle_name);
             manufacturer = itemView.findViewById(R.id.vehicle_manufacturer);
-/*          modelTI = itemView.findViewById(R.id.modelTI);
-            licencePlateTI = itemView.findViewById(R.id.licencePlateTI);
-            yearTI = itemView.findViewById(R.id.yearTI);
-            fuelTypeTI = itemView.findViewById(R.id.fuelTypeTI);
-            fuelCapacityTI = itemView.findViewById(R.id.fuelCapacityTI);
-            chassisNumberTI = itemView.findViewById(R.id.chassisNumberTI);
-            identificationVinTI = itemView.findViewById(R.id.identificationVinTI);
-            vehicleNotesTI = itemView.findViewById(R.id.vehicleNotesTI);
-*/
+
+            // Setting up OnClickListener for the
             revealVehicleCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

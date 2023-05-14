@@ -47,30 +47,35 @@ public class AddEditDeleteTypeOfExpenseActivity extends AppCompatActivity {
             isEditMode = true;
         }
 
+        // Set the type of expense name to the TextInputEditText
         typeOfExpenseNameTI.setText(typeOfExpenseName);
     }
 
+    // Method to save type of expense
     void saveTypeOfExpense(){
         String typeOfExpenseName = typeOfExpenseNameTI.getText().toString();
 
         if(typeOfExpenseName==null || typeOfExpenseName.isEmpty() ){
+            // Display an error if the type of expense name is empty
             typeOfExpenseNameTI.setError("Type of Expense is required");
             return;
         }
 
+        // Create TypeOfExpenseModel object and set its properties
         TypeOfExpenseModel typeOfExpenseModel = new TypeOfExpenseModel();
         typeOfExpenseModel.setTypeOfExpense(typeOfExpenseName);
 
+        // Save typeOfExpenseModel to Firebase
         saveTypeOfExpenseToFirebase(typeOfExpenseModel);
     }
 
     void saveTypeOfExpenseToFirebase(TypeOfExpenseModel typeOfExpenseModel){
         DocumentReference documentReference;
         if(isEditMode){
-            //update the note
+            // Update existing type of expense
             documentReference = Utility.getCollectionReferenceForTypeOfExpense().document(docId);
         }else{
-            //create new note
+            // Create new type of expense
             documentReference = Utility.getCollectionReferenceForTypeOfExpense().document();
         }
 
@@ -78,19 +83,20 @@ public class AddEditDeleteTypeOfExpenseActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
-                    //note is added
+                    // Type of expense is added or updated successfully
                     Utility.showToast(AddEditDeleteTypeOfExpenseActivity.this,"Type of Expense added successfully");
                     finish();
                 }else{
+                    // Failed to add or update the type of expense
                     Utility.showToast(AddEditDeleteTypeOfExpenseActivity.this,"Failed while adding Type of Expense");
                 }
             }
         });
     }
 
+    // Method to delete type of expense from Firebase
     void deleteTypeOfExpenseFromFirebase(){
-        DocumentReference documentReference;
-        documentReference = Utility.getCollectionReferenceForTypeOfExpense().document(docId);
+        DocumentReference documentReference = Utility.getCollectionReferenceForTypeOfExpense().document(docId);
         documentReference.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -107,6 +113,7 @@ public class AddEditDeleteTypeOfExpenseActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu and handle visibility of save and delete buttons based on edit mode
         getMenuInflater().inflate(R.menu.save_type_of_expense_menu, menu);
 
         MenuItem saveItem = menu.findItem(R.id.saveTypeOfExpenseBtn);
@@ -115,6 +122,7 @@ public class AddEditDeleteTypeOfExpenseActivity extends AppCompatActivity {
         saveItem.setVisible(true);
         deleteItem.setVisible(false);
 
+        // If in edit mode, show the delete button and set the activity title
         if(isEditMode){
             getSupportActionBar().setTitle("Edit your Type of Expense");
             saveItem.setVisible(true);
@@ -129,7 +137,7 @@ public class AddEditDeleteTypeOfExpenseActivity extends AppCompatActivity {
 
         switch (id) {
             case R.id.saveTypeOfExpenseBtn:
-                // Handle edit icon click
+                // Handle save button click
                 saveTypeOfExpense();
                 return true;
             case R.id.deleteTypeOfExpenseBtn:
@@ -137,6 +145,7 @@ public class AddEditDeleteTypeOfExpenseActivity extends AppCompatActivity {
                 deleteTypeOfExpenseFromFirebase();
                 return true;
             case android.R.id.home:
+                // Handle home (back) button click
                 finish();
                 return true;
             default:

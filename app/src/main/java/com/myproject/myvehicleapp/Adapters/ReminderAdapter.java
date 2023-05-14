@@ -27,15 +27,19 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+// This class is a FirestoreRecyclerAdapter that handles the reminder data Firestore database to RecyclerView.
 public class ReminderAdapter extends FirestoreRecyclerAdapter<ReminderModel, ReminderAdapter.ReminderViewHolder> {
     Context context;
+    // Variable to keep track of the currently expanded item
     private int expandedPosition = -1;
 
+    // Constructor for ReminderAdapter
     public ReminderAdapter(@NonNull FirestoreRecyclerOptions<ReminderModel> options, Context context) {
         super(options);
         this.context = context;
     }
 
+    // This method binds the data to the ViewHolder
     @Override
     protected void onBindViewHolder(@NonNull ReminderViewHolder holder, int position, @NonNull ReminderModel reminderModel) {
         holder.reminderTitle.setText(reminderModel.reminderTitle);
@@ -50,9 +54,9 @@ public class ReminderAdapter extends FirestoreRecyclerAdapter<ReminderModel, Rem
         // Set the date and time TextViews
         holder.reminderTimestampDate.setText(dateString);
         holder.reminderTimestampTime.setText(timeString);
-
         holder.reminderToggle.setOnCheckedChangeListener(null);
 
+        // Set the reminder description
         holder.reminderDescription.setText(String.valueOf(reminderModel.reminderDescription));
 
         // Initialize the switch based on the alarm state stored in the reminderModel
@@ -91,9 +95,13 @@ public class ReminderAdapter extends FirestoreRecyclerAdapter<ReminderModel, Rem
             documentReference.update("alarmEnabled", isChecked);
         });
 
+        // Set up a listener for the edit button
         holder.editBtn.setOnClickListener((v)->{
+
+            // Create an intent to start the AddEditDeleteReminderActivity
             Intent intent = new Intent(context, AddEditDeleteReminderActivity.class);
 
+            // Put the reminder data into the intent extras
             intent.putExtra("reminderTitle",reminderModel.reminderTitle);
             intent.putExtra("reminderTimestamp",reminderModel.reminderTimestamp);
             intent.putExtra("reminderDescription",reminderModel.reminderDescription);
@@ -101,6 +109,7 @@ public class ReminderAdapter extends FirestoreRecyclerAdapter<ReminderModel, Rem
             String docId = this.getSnapshots().getSnapshot(position).getId();
             intent.putExtra("docId",docId);
 
+            // Start the activity
             context.startActivity(intent);
         });
 
@@ -109,45 +118,51 @@ public class ReminderAdapter extends FirestoreRecyclerAdapter<ReminderModel, Rem
         holder.linearLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
     }
 
+    // This method creates a new ViewHolder
     @NonNull
     @Override
     public ReminderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // Inflate the view for the reminder item
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_reminder_item,parent,false);
+        // Create and return a new ViewHolder
         return new ReminderViewHolder(view);
     }
 
+    // ViewHolder class for a Reminder
     class ReminderViewHolder extends RecyclerView.ViewHolder{
 
+        // Define View
         TextView reminderTitle;
         TextView reminderTimestampDate;
         TextView reminderTimestampTime;
         TextView reminderDescription;
-
         SwitchMaterial reminderToggle;
-
         ImageView reminderIcon;
         ImageView editBtn;
         LinearLayout linearLayout;
 
+
         public ReminderViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            // Initialize the view variables
             linearLayout = itemView.findViewById(R.id.expanded_reminder_menu);
             editBtn = itemView.findViewById(R.id.reminder_edit_btn);
-
             reminderTitle = itemView.findViewById(R.id.reminder_title);
             reminderTimestampDate = itemView.findViewById(R.id.reminder_timestamp_date);
             reminderTimestampTime = itemView.findViewById(R.id.reminder_timestamp_time);
             reminderDescription = itemView.findViewById(R.id.reminder_description);
-
             reminderToggle = itemView.findViewById(R.id.reminder_toggle);
             reminderIcon = itemView.findViewById(R.id.reminderSwitchIcon);
 
+            // Set up a click listener for the item view
             itemView.setOnClickListener(view -> {
+                // If this item is already expanded, collapse it
                 if (expandedPosition == getBindingAdapterPosition()) {
                     expandedPosition = -1;
                     notifyItemChanged(getBindingAdapterPosition());
                 } else {
+                    // Otherwise, collapse the previously expanded item and expand this one
                     if (expandedPosition != -1) {
                         int oldExpandedPosition = expandedPosition;
                         expandedPosition = -1;

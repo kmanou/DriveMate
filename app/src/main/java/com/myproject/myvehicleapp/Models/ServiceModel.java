@@ -2,18 +2,22 @@ package com.myproject.myvehicleapp.Models;
 
 import com.google.firebase.Timestamp;
 
+// This class serves as a data model for a Service object
 public class ServiceModel {
 
-    public String recyclerTitle;
-    public Timestamp serviceTimeStamp;
-    public Integer serviceOdometer;
-    public String serviceTypeOfService;
-    public String servicePaymentMethod;
-    public Float serviceTotalCost;
-    public String serviceNote;
+    public String recyclerTitle;// The title for the Recycler view item
+    public Timestamp serviceTimeStamp;// The timestamp when the service took place
+    public Integer serviceOdometer;// The odometer reading at the time of service
+    public String serviceTypeOfService;// The type of service performed
+    public String servicePaymentMethod;// The payment method used for the service
+    public Float serviceTotalCost;// The total cost of the service
+    public String serviceNote;// Any additional notes related to the service
 
+    // Default constructor
     public ServiceModel() {
     }
+
+    // Getter and Setter methods for each field will go here...
 
     public String getRecyclerTitle() {
         return recyclerTitle;

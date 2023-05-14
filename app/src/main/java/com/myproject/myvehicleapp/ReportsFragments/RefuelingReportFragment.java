@@ -90,6 +90,7 @@ public class RefuelingReportFragment extends Fragment {
     }
 
     private void fetchTotalCost() {
+        // Get the reference to the collection for refueling
         CollectionReference myRefuelingCollectionReference = Utility.getCollectionReferenceForRefueling();
 
         myRefuelingCollectionReference
@@ -105,15 +106,18 @@ public class RefuelingReportFragment extends Fragment {
                         double totalLitres = 0;
 
                         for (QueryDocumentSnapshot document : task.getResult()) {
+                            // Fetch the refueling cost, odometer, timestamp, and fuel litres from each document
                             Double cost = document.getDouble("refuelingTotalCost");
                             Double odometer = document.getDouble("refuelingOdometer");
                             Timestamp refuelingTimestamp = document.getTimestamp("refuelingTimestamp");
                             Double litres = document.getDouble("refuelingFuelLitres");
 
+                            // Calculate the total litres
                             if (litres != null) {
                                 totalLitres += litres;
                             }
 
+                            // Calculate the total cost, max odometer, min timestamp, and max timestamp
                             if (cost != null) {
                                 totalCost += cost;
                             }
@@ -137,12 +141,12 @@ public class RefuelingReportFragment extends Fragment {
                         displayTotalVolumeRefueling(totalLitres);
                         displayAvgLitersPer100Km(totalLitres, maxOdometer);
 
-
                         // Calculate and display the cost per month chart
                         Map<Integer, Float> costPerMonth = calculateCostPerMonth(task.getResult().getDocuments());
                         setupCostPerMonthChart(costPerMonth);
 
                     } else {
+                        // Handle the case of an error while fetching data
                         mTotalRefuelingCostTextView.setText("Error fetching data.");
                         mByKmRefuelingCostTextView.setText("Error fetching data.");
                         mByDayRefuelingCostTextView.setText("Error fetching data.");
@@ -150,6 +154,7 @@ public class RefuelingReportFragment extends Fragment {
                     }
                 });
     }
+
 
     // Update the report refueling title with number of entries and date range
     private void updateReportRefuelingTitle(int numberOfEntries, long minTimestamp, long maxTimestamp) {

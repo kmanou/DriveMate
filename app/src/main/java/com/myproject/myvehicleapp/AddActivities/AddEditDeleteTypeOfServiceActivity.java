@@ -38,7 +38,7 @@ public class AddEditDeleteTypeOfServiceActivity extends AppCompatActivity {
 
         typeOfServiceNameTI = findViewById(R.id.typeOfServiceNameTI);
 
-        //receive data
+        // Receive data
         typeOfServiceName = getIntent().getStringExtra("typeOfService");
         docId = getIntent().getStringExtra("docId");
 
@@ -49,6 +49,7 @@ public class AddEditDeleteTypeOfServiceActivity extends AppCompatActivity {
         typeOfServiceNameTI.setText(typeOfServiceName);
     }
 
+    // Method to save the type of service
     void saveTypeOfService(){
         String typeOfServiceName = typeOfServiceNameTI.getText().toString();
 
@@ -57,19 +58,22 @@ public class AddEditDeleteTypeOfServiceActivity extends AppCompatActivity {
             return;
         }
 
+        // Create a TypeOfServiceModel object and set its properties
         TypeOfServiceModel typeOfServiceModel = new TypeOfServiceModel();
         typeOfServiceModel.setTypeOfService(typeOfServiceName);
 
+        // Save the typeOfServiceModel to Firebase
         saveTypeOfServiceToFirebase(typeOfServiceModel);
     }
 
+    // Method to save the type of service to Firebase
     void saveTypeOfServiceToFirebase(TypeOfServiceModel typeOfServiceModel){
         DocumentReference documentReference;
         if(isEditMode){
-            //update the note
+            // Update the type of service
             documentReference = Utility.getCollectionReferenceForTypeOfService().document(docId);
         }else{
-            //create new note
+            // Create a new type of service
             documentReference = Utility.getCollectionReferenceForTypeOfService().document();
         }
 
@@ -77,7 +81,7 @@ public class AddEditDeleteTypeOfServiceActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
-                    //note is added
+                    // Type of service is added
                     Utility.showToast(AddEditDeleteTypeOfServiceActivity.this,"Type of Service added successfully");
                     finish();
                 }else{
@@ -87,6 +91,7 @@ public class AddEditDeleteTypeOfServiceActivity extends AppCompatActivity {
         });
     }
 
+    // Method to delete the type of service from Firebase
     void deleteTypeOfServiceFromFirebase(){
         DocumentReference documentReference;
         documentReference = Utility.getCollectionReferenceForTypeOfService().document(docId);
@@ -94,7 +99,7 @@ public class AddEditDeleteTypeOfServiceActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
-                    //note is deleted
+                    // Type of service is deleted
                     Utility.showToast(AddEditDeleteTypeOfServiceActivity.this,"Type of Service deleted successfully");
                     finish();
                 }else{
@@ -115,6 +120,7 @@ public class AddEditDeleteTypeOfServiceActivity extends AppCompatActivity {
         deleteItem.setVisible(false);
 
         if(isEditMode){
+            // If in edit mode, show the delete button and
             getSupportActionBar().setTitle("Edit your Type of Service");
             saveItem.setVisible(true);
             deleteItem.setVisible(true);
@@ -128,7 +134,7 @@ public class AddEditDeleteTypeOfServiceActivity extends AppCompatActivity {
 
         switch (id) {
             case R.id.saveTypeOfServiceBtn:
-                // Handle edit icon click
+                // Handle save icon click
                 saveTypeOfService();
                 return true;
             case R.id.deleteTypeOfServiceBtn:
@@ -136,6 +142,7 @@ public class AddEditDeleteTypeOfServiceActivity extends AppCompatActivity {
                 deleteTypeOfServiceFromFirebase();
                 return true;
             case android.R.id.home:
+                // Handle home (back) button click
                 finish();
                 return true;
             default:

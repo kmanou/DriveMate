@@ -4,16 +4,19 @@ import com.google.firebase.Timestamp;
 
 public class ExpenseModel {
 
-    public String recyclerTitle;
-    public Timestamp expenseTimeStamp;
-    public Integer expenseOdometer;
-    public String expenseTypeOfExpense;
-    public String expensePaymentMethod;
-    public Float expenseTotalCost;
-    public String expenseNote;
+    public String recyclerTitle; // Title for the RecyclerView item
+    public Timestamp expenseTimeStamp; // Timestamp of the expense
+    public Integer expenseOdometer; // Odometer reading at the time of the expense
+    public String expenseTypeOfExpense; // Type of expense
+    public String expensePaymentMethod; // Payment method used for the expense
+    public Float expenseTotalCost; // Total cost of the expense
+    public String expenseNote; // Additional notes for the expense
 
     public ExpenseModel() {
+        // Default constructor required for Firebase
     }
+
+    // Getters and setters for the ExpenseModel properties
 
     public String getRecyclerTitle() {
         return recyclerTitle;

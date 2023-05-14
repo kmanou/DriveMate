@@ -70,6 +70,7 @@ public class AddEditDeleteReminderActivity extends AppCompatActivity {
         reminderDescription = getIntent().getStringExtra("reminderDescription");
         docId = getIntent().getStringExtra("docId");
 
+        // Check if we are in edit mode
         if(docId!=null && !docId.isEmpty()){
             isEditMode = true;
         }
@@ -94,7 +95,9 @@ public class AddEditDeleteReminderActivity extends AppCompatActivity {
         reminderDescriptionTI.setText(reminderDescription);
     }
 
+    // Save or update the reminder to Firebase
     void saveReminder() {
+        // Validate input and create ReminderModel object
         String reminderDate = Objects.requireNonNull(reminderDatePickerTI.getText()).toString();
         String reminderTime = Objects.requireNonNull(reminderTimePickerTI.getText()).toString();
 
@@ -129,6 +132,7 @@ public class AddEditDeleteReminderActivity extends AppCompatActivity {
         saveReminderToFirebase(reminderModel);
     }
 
+    // Save or update the reminder to Firebase
     void saveReminderToFirebase(ReminderModel reminderModel){
         DocumentReference documentReference;
         if(isEditMode){
@@ -147,7 +151,6 @@ public class AddEditDeleteReminderActivity extends AppCompatActivity {
                 if(task.isSuccessful()){
                     //reminder is added
                     Utility.showToast(AddEditDeleteReminderActivity.this,"Reminder added successfully");
-
                     finish();
                 }else{
                     Utility.showToast(AddEditDeleteReminderActivity.this,"Failed while adding reminder");
@@ -156,9 +159,9 @@ public class AddEditDeleteReminderActivity extends AppCompatActivity {
         });
     }
 
+    // Delete the reminder from Firebase
     void deleteReminderFromFirebase(){
-        DocumentReference documentReference;
-        documentReference = Utility.getCollectionReferenceForReminders().document(docId);
+        DocumentReference documentReference = Utility.getCollectionReferenceForReminders().document(docId);
         documentReference.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -175,6 +178,7 @@ public class AddEditDeleteReminderActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu and handle visibility of items
         getMenuInflater().inflate(R.menu.save_reminder_menu, menu);
 
         MenuItem saveItem = menu.findItem(R.id.saveReminderBtn);
@@ -195,6 +199,7 @@ public class AddEditDeleteReminderActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+        // Handle item selections in the menu
         switch (id) {
             case R.id.saveReminderBtn:
                 // Handle edit icon click
@@ -212,6 +217,7 @@ public class AddEditDeleteReminderActivity extends AppCompatActivity {
         }
     }
 
+    // Show a date picker dialog
     public void showDatePicker(View view) {
         final Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
@@ -231,6 +237,7 @@ public class AddEditDeleteReminderActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+    // Show a time picker dialog
     public void showTimePicker(View view) {
         final Calendar calendar = Calendar.getInstance();
         // Create a new instance of TimePickerDialog and return it

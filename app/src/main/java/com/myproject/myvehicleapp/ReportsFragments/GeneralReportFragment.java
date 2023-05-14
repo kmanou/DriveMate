@@ -55,8 +55,10 @@ public class GeneralReportFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Inflate the layout for the fragment
         View view = inflater.inflate(R.layout.fragment_general_report, container, false);
 
+        // Initialize the TextViews and PieChart
         mReportGeneralTitle = view.findViewById(R.id.reportGeneralTitle);
         mTotalGeneralCostTextView = view.findViewById(R.id.totalGeneralCostTextView);
         mByKmGeneralCostTextView = view.findViewById(R.id.byKmGeneralCostTextView);
@@ -72,16 +74,20 @@ public class GeneralReportFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        // Check if the user is logged in and fetch the total cost and cost per day
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
+            // Fetch and display the total cost and cost per day from all collections
             fetchTotalCostAndCostPerDayFromAllCollections();
+
+            // Fetch and display the total cost per collection
             fetchTotalCostPerCollection();
         } else {
+            // Redirect to the LoginActivity
             startActivity(new Intent(getActivity(), LoginActivity.class));
             getActivity().finish();
         }
     }
-
 
     // Fetch the total cost per collections
     private void fetchTotalCostPerCollection() {

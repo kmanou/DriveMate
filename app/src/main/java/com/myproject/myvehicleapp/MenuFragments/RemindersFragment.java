@@ -51,11 +51,13 @@ public class RemindersFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_reminders, container, false);
 
+        // Set up the toolbar
         mainToolbarReminder = view.findViewById(R.id.mainToolbarReminderFRG);
         ((AppCompatActivity) getActivity()).setSupportActionBar(mainToolbarReminder);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Reminders");
         Tools.setSystemBarColor(getActivity(), R.color.red_800);
 
+        // Set up the RecyclerView
         reminderRecyclerView = view.findViewById(R.id.reminder_recycler_view_frg);
 
         // Check if the user is authenticated
@@ -66,26 +68,29 @@ public class RemindersFragment extends Fragment {
             // Set up alarm manager and pending intent
             alarmManager = (AlarmManager) requireActivity().getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(requireActivity(), ReminderAlarmReceiver.class);
-            //alarmIntent = PendingIntent.getBroadcast(requireActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             alarmIntent = PendingIntent.getBroadcast(requireActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         } else {
             // User is not signed in, redirect to login activity
             startActivity(new Intent(requireActivity(), LoginActivity.class));
             requireActivity().finish();
         }
+
         return view;
     }
 
     void setupRecyclerView() {
+        // Set up the Firestore query
         Query query = Utility.getCollectionReferenceForReminders().orderBy("reminderTimestamp", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<ReminderModel> options = new FirestoreRecyclerOptions.Builder<ReminderModel>()
                 .setQuery(query, ReminderModel.class).build();
+
+        // Set up the RecyclerView layout manager, adapter, and adapter
         reminderRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         reminderAdapter = new ReminderAdapter(options, getActivity());
         reminderRecyclerView.setAdapter(reminderAdapter);
     }
 
-    public RemindersFragment(){
+    public RemindersFragment() {
         // Required empty public constructor
     }
 
@@ -102,7 +107,7 @@ public class RemindersFragment extends Fragment {
             reminderAdapter.startListening();
         }
 
-        // Start alarm manager
+        // Start the alarm manager
         startAlarm();
     }
 
@@ -113,12 +118,12 @@ public class RemindersFragment extends Fragment {
             reminderAdapter.stopListening();
         }
 
-        // Stop alarm manager
+        // Stop the alarm manager
         stopAlarm();
     }
 
     private void startAlarm() {
-        // Get the next reminder
+        // Retrieve the next reminder from Firestore and set up the alarm
         Utility.getCollectionReferenceForReminders().orderBy("reminderTimestamp", Query.Direction.ASCENDING)
                 .whereGreaterThanOrEqualTo("reminderTimestamp", new Date())
                 .limit(1)
@@ -128,10 +133,10 @@ public class RemindersFragment extends Fragment {
                         DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                         ReminderModel reminder = documentSnapshot.toObject(ReminderModel.class);
                         if (reminder != null) {
-                            // Set alarm
+                            // Set the alarm trigger time
                             long triggerTime = reminder.getReminderTimestamp().toDate().getTime();
 
-                            // Create alarm intent
+                            // Create the alarm intent
                             Intent alarmIntent = new Intent(getActivity(), ReminderAlarmReceiver.class);
                             alarmIntent.putExtra("reminderId", documentSnapshot.getId());
                             alarmIntent.putExtra("reminderTitle", reminder.getReminderTitle());
@@ -141,8 +146,10 @@ public class RemindersFragment extends Fragment {
                             Uri alarmSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
                             alarmIntent.putExtra("soundUri", alarmSoundUri.toString());
 
+                            // Create a pending intent for the alarm
                             PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
+                            // Set the alarm using the alarm manager
                             alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
                         }
                     }
@@ -150,6 +157,7 @@ public class RemindersFragment extends Fragment {
     }
 
     private void stopAlarm() {
+        // Cancel the alarm using the alarm manager
         alarmManager.cancel(alarmIntent);
     }
 

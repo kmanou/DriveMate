@@ -36,16 +36,18 @@ public class TypeOfExpenseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_type_of_expense);
 
+        // Initialize the toolbar
         mainToolbarTypeOfExpense = findViewById(R.id.mainToolbarTypeOfExpense);
-
         setSupportActionBar(mainToolbarTypeOfExpense);
         getSupportActionBar().setTitle("Type of Expense");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Tools.setSystemBarColor(this, R.color.red_800);
 
+        // Get references to UI elements
         addTypeOfExpenseBtn = findViewById(R.id.add_type_of_expense_btn);
         recyclerTypeOfExpenseView = findViewById(R.id.recycler_type_of_expense_view);
 
+        // Set click listener for the "Add Type of Expense" button
         addTypeOfExpenseBtn.setOnClickListener((v) -> startActivity(new Intent(TypeOfExpenseActivity.this, AddEditDeleteTypeOfExpenseActivity.class)));
 
         // Check if the user is authenticated
@@ -58,24 +60,29 @@ public class TypeOfExpenseActivity extends AppCompatActivity {
             startActivity(new Intent(TypeOfExpenseActivity.this, LoginActivity.class));
             finish();
         }
-        
+
+        // Check if the activity is in select mode
         selectMode = getIntent().getBooleanExtra("selectMode", false);
     }
 
+    // Set up the RecyclerView and adapter
     void setupRecyclerView() {
+        // Create a Firestore query to fetch the type of expense data
         Query query = Utility.getCollectionReferenceForTypeOfExpense().orderBy("typeOfExpense", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<TypeOfExpenseModel> options = new FirestoreRecyclerOptions.Builder<TypeOfExpenseModel>()
                 .setQuery(query, TypeOfExpenseModel.class).build();
         recyclerTypeOfExpenseView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Create an instance of the TypeOfExpenseAdapter and attach it to the RecyclerView
         typeOfExpenseAdapter = new TypeOfExpenseAdapter(options, this, (TypeOfExpenseModel, docId) -> {
             if (selectMode) {
+                // If in select mode, return the selected type of expense to the calling activity
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("selectedTypeOfExpense", TypeOfExpenseModel.typeOfExpense);
                 setResult(RESULT_OK, resultIntent);
                 finish();
             } else {
-                // Handle service type item click here
+                // If not in select mode, handle the item click as desired
                 Toast.makeText(TypeOfExpenseActivity.this,
                         "Clicked on: " + TypeOfExpenseModel.typeOfExpense, Toast.LENGTH_SHORT).show();
             }
@@ -97,18 +104,21 @@ public class TypeOfExpenseActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        // Start listening for Firestore updates
         typeOfExpenseAdapter.startListening();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        // Stop listening for Firestore updates
         typeOfExpenseAdapter.stopListening();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        // Notify the adapter that the data set has changed
         typeOfExpenseAdapter.notifyDataSetChanged();
     }
 }

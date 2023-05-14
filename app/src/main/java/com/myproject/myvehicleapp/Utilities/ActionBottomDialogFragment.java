@@ -19,7 +19,7 @@ import com.myproject.myvehicleapp.AddActivities.AddEditDeleteServiceActivity;
 import com.myproject.myvehicleapp.R;
 
 
-public class ActionBottomDialogFragment extends BottomSheetDialogFragment implements View.OnClickListener{
+public class ActionBottomDialogFragment extends BottomSheetDialogFragment implements View.OnClickListener {
 
     public static final String TAG = "ActionBottomDialog";
     private ItemClickListener bottomSheetMenuListener;
@@ -28,18 +28,23 @@ public class ActionBottomDialogFragment extends BottomSheetDialogFragment implem
         return new ActionBottomDialogFragment();
     }
 
-    @Nullable @Override
+    @Nullable
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        // Inflate the layout for the bottom sheet
         return inflater.inflate(R.layout.bottom_sheet_menu, container, false);
     }
 
-    @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Set click listeners for the different buttons
         view.findViewById(R.id.reminderBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Handle reminder button click
                 Intent intent = new Intent(view.getContext(), AddEditDeleteReminderActivity.class);
                 view.getContext().startActivity(intent);
             }
@@ -48,7 +53,7 @@ public class ActionBottomDialogFragment extends BottomSheetDialogFragment implem
         view.findViewById(R.id.noteBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(view.getContext(), NoteActivity.class);
+                // Handle note button click
                 Intent intent = new Intent(view.getContext(), AddEditDeleteNoteActivity.class);
                 view.getContext().startActivity(intent);
             }
@@ -57,7 +62,7 @@ public class ActionBottomDialogFragment extends BottomSheetDialogFragment implem
         view.findViewById(R.id.serviceBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(view.getContext(), ServiceActivity.class);
+                // Handle service button click
                 Intent intent = new Intent(view.getContext(), AddEditDeleteServiceActivity.class);
                 view.getContext().startActivity(intent);
             }
@@ -66,7 +71,7 @@ public class ActionBottomDialogFragment extends BottomSheetDialogFragment implem
         view.findViewById(R.id.expenseBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(view.getContext(), ExpenseActivity.class);
+                // Handle expense button click
                 Intent intent = new Intent(view.getContext(), AddEditDeleteExpenseActivity.class);
                 view.getContext().startActivity(intent);
             }
@@ -75,7 +80,7 @@ public class ActionBottomDialogFragment extends BottomSheetDialogFragment implem
         view.findViewById(R.id.refuelBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(view.getContext(), RefuelingActivity.class);
+                // Handle refuel button click
                 Intent intent = new Intent(view.getContext(), AddEditDeleteRefuelingActivity.class);
                 view.getContext().startActivity(intent);
             }
@@ -84,10 +89,10 @@ public class ActionBottomDialogFragment extends BottomSheetDialogFragment implem
         view.findViewById(R.id.closeBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Handle close button click
                 dismiss();
             }
         });
-
     }
 
     @Override
@@ -96,8 +101,7 @@ public class ActionBottomDialogFragment extends BottomSheetDialogFragment implem
         if (context instanceof ItemClickListener) {
             bottomSheetMenuListener = (ItemClickListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement ItemClickListener");
+            throw new RuntimeException(context.toString() + " must implement ItemClickListener");
         }
     }
 
@@ -107,8 +111,9 @@ public class ActionBottomDialogFragment extends BottomSheetDialogFragment implem
         bottomSheetMenuListener = null;
     }
 
-    @Override public void onClick(View view) {
-
+    @Override
+    public void onClick(View view) {
+        // Handle click events
     }
 
     public interface ItemClickListener {
